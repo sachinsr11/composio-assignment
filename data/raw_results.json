@@ -1,0 +1,20 @@
+{
+  "1": {
+    "id": "1",
+    "app": "Salesforce",
+    "hint": "salesforce.com",
+    "error": "extraction failed: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}"
+  },
+  "11": {
+    "id": "11",
+    "app": "Zendesk",
+    "hint": "zendesk.com",
+    "error": "extraction failed: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}"
+  },
+  "21": {
+    "id": "21",
+    "app": "Slack",
+    "hint": "slack.com",
+    "error": "extraction failed: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}"
+  }
+}
