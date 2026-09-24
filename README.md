@@ -1,8 +1,9 @@
-# 100 Apps → Agent Buildability Study
+# 10-App Pilot — Agent Buildability Study
 
-An agent researches 100 apps (auth, self-serve vs gated, API surface, MCP), derives a
-buildability verdict, clusters the patterns, verifies itself, and ships one self-explanatory
-HTML page.
+An agent researches **10 of 100 target apps** (one per category: auth, self-serve vs gated, API
+surface, MCP), derives a buildability verdict, clusters the patterns observed in the pilot, and
+ships one self-explanatory HTML page. The remaining 90 apps are left for scaling after
+verification.
 
 Built with the current **Composio v3 session SDK** (`composio` + `composio_gemini`) for tool
 discovery/execution and **Gemini** (`google-genai`) for structured extraction.

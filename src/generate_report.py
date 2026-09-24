@@ -24,7 +24,7 @@ TEMPLATE = r"""<!doctype html>
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>100 Apps — Agent Buildability Study</title>
+<title>10-App Pilot — Agent Buildability Study</title>
 <style>
   :root { --bg:#0b0f17; --panel:#131a26; --line:#243044; --txt:#e6edf6; --mut:#93a4bd; --acc:#5b9dff;
           --yes:#1f8a4c; --partial:#a8760a; --no:#b3363f; }
@@ -69,8 +69,8 @@ TEMPLATE = r"""<!doctype html>
 <body>
 <header>
   <div class="wrap">
-    <h1>100 Apps → Agent Toolkits: What's Buildable Today</h1>
-    <p class="sub">An agent researched auth, access gates and API surface for 100 apps, clustered the patterns, and verified itself. <span id="stamp" class="pill"></span></p>
+    <h1>10-App Pilot → Agent Toolkits: What's Buildable Today</h1>
+    <p class="sub">An agent researched auth, access gates and API surface for <b>10 of 100 target apps</b> (one per category). Patterns below are drawn from this pilot only and are not presented as representative of the full 100. <span id="stamp" class="pill"></span></p>
   </div>
 </header>
 
@@ -89,7 +89,7 @@ TEMPLATE = r"""<!doctype html>
 </section>
 
 <section class="wrap">
-  <h2>All 100 apps</h2>
+  <h2>Pilot results — 10 of 100 target apps</h2>
   <div class="controls">
     <input id="q" placeholder="Search app, category, auth…" style="min-width:260px" />
     <button data-f="all" class="active">All</button>
@@ -145,18 +145,18 @@ document.getElementById("cards").innerHTML = cards.map(([n,l]) =>
 const topAuth = Object.entries(insights.auth).slice(0,4).map(([k,v])=>`${k} (${v})`).join(", ");
 const topAccess = Object.entries(insights.access).slice(0,4).map(([k,v])=>`${k} (${v})`).join(", ");
 const patterns = [
-  `<b>${pct(insights.oauth_share)}</b> of apps use <b>OAuth2</b> — the dominant agent auth pattern. Auth mix: ${esc(topAuth)}.`,
-  `<b>${pct(insights.self_serve_share)}</b> offer self-serve credentials. Access mix: ${esc(topAccess)}.`,
-  `<b>${insights.buildability.yes||0}</b> are buildable today, <b>${insights.buildability.partial||0}</b> partial, <b>${insights.buildability.no||0}</b> blocked.`,
-  `MCP landscape: ${esc(Object.entries(insights.mcp).map(([k,v])=>`${k} (${v})`).join(", "))}.`,
+  `<b>Pilot:</b> <b>${pct(insights.oauth_share)}</b> of the 10 apps use <b>OAuth2</b> — the dominant auth pattern so far. Auth mix: ${esc(topAuth)}.`,
+  `<b>Pilot:</b> <b>${pct(insights.self_serve_share)}</b> offer self-serve credentials. Access mix: ${esc(topAccess)}.`,
+  `<b>Pilot:</b> <b>${insights.buildability.yes||0}</b> are buildable today, <b>${insights.buildability.partial||0}</b> partial, <b>${insights.buildability.no||0}</b> blocked.`,
+  `<b>Pilot MCP landscape:</b> ${esc(Object.entries(insights.mcp).map(([k,v])=>`${k} (${v})`).join(", "))}.`,
 ];
 document.getElementById("patterns").innerHTML = patterns.map(p=>`<li>${p}</li>`).join("");
 
 const blockers = Object.entries(insights.top_blockers).slice(0,6);
 document.getElementById("friction").innerHTML =
-  `<li>Most common blocker: <b>${esc(blockers[0]?.[0] || "n/a")}</b>${blockers[0]?` (${blockers[0][1]} apps)`:""}.</li>` +
-  blockers.slice(1).map(([k,v])=>`<li>${esc(k)} — ${v}</li>`).join("") +
-  `<li>Easy wins (self-serve + public API): <b>${(insights.easy_wins||[]).length}</b> apps.</li>`;
+  `<li><b>Pilot:</b> Most common blocker: <b>${esc(blockers[0]?.[0] || "n/a")}</b>${blockers[0]?` (${blockers[0][1]} of 10)`:""}.</li>` +
+  blockers.slice(1).map(([k,v])=>`<li><b>Pilot:</b> ${esc(k)} — ${v} of 10</li>`).join("") +
+  `<li><b>Pilot easy wins</b> (self-serve + public API): <b>${(insights.easy_wins||[]).length}</b> of 10 apps.</li>`;
 
 const accessColor = a => ({"self-serve":"b-yes","free-trial":"b-partial","paid-plan":"b-partial","admin-approval":"b-no","partnership":"b-no","contact-sales":"b-no"}[a] || "");
 let filter = "all", sortKey = "app", asc = true;
@@ -205,11 +205,14 @@ document.getElementById("agent").innerHTML = `
     <li><b>Extract</b> category, auth, access and API surface with Gemini (JSON output).</li>
     <li><b>Derive the buildability verdict last</b>, from the facts above — never guessed upfront.</li>
   </ol>
-  <p class="note"><b>Where a human was needed:</b> tuning the extraction prompt after a 10-app pilot; judging ambiguous gated apps (partner vs self-serve); and hand-checking one app per category against the cited docs.</p>`;
+  <p class="note"><b>Where a human is needed:</b> review ambiguous access classifications and validate cited evidence before scaling to the remaining 90 apps.</p>`;
 
 const v = verification?.summary;
-let vhtml = `<p>The agent re-fetched fresh evidence and audited each field against it (skeptical re-prompt).</p>`;
-if (v) vhtml += `<p><b>Agent self-check:</b> ${pct(v.accuracy)} of fields supported (${v.correct}/${v.fields}) across ${v.apps} apps.</p>`;
+let vhtml = `<p>Verification is the next step in the pipeline. The repository contains the verification workflow and checklist (<code>src/verify.py</code>, <code>data/human_checklist.csv</code>) for reproducibility.</p>`;
+if (v) {
+  vhtml += `<p>The agent re-fetched fresh evidence and audited each field against it (skeptical re-prompt).</p>`;
+  vhtml += `<p><b>Agent self-check:</b> ${pct(v.accuracy)} of fields supported (${v.correct}/${v.fields}) across ${v.apps} apps.</p>`;
+}
 if (accuracy) {
   vhtml += `<p><b>Human ground truth</b> on ${accuracy.human_checked_apps} apps:
     first pass <b>${pct(accuracy.first_pass.accuracy)}</b> → after verification loop <b>${pct(accuracy.after_agent_loop.accuracy)}</b>.</p>`;
@@ -217,7 +220,7 @@ if (accuracy) {
     Object.entries(accuracy.per_field).map(([f,d])=>`<tr><td>${esc(f)}</td><td>${pct(d.first_accuracy)}</td><td>${pct(d.fixed_accuracy)}</td></tr>`).join("") +
     `</tbody></table>`;
 } else {
-  vhtml += `<p class="muted">Human corrections pending — run <code>verify.py</code> and fill <code>data/human_checklist.csv</code>.</p>`;
+  vhtml += `<p class="muted"><b>Agent self-check and human verification are pending.</b> Run <code>python src/verify.py</code> to produce the agent audit and human checklist, then fill <code>data/human_corrections.json</code> and re-run.</p>`;
 }
 if (verification?.apps) {
   const misses = verification.apps.filter(a=>a.correct < a.total).slice(0,6);
@@ -227,7 +230,7 @@ document.getElementById("verify").innerHTML = vhtml;
 
 document.getElementById("foot").innerHTML =
   `<p>Source: <a href="https://github.com/" id="repo">repository</a> · <a href="data/raw_results.json">raw results JSON</a> · <a href="data/insights.json">insights JSON</a></p>
-   <p class="muted">Method: Composio session tools for gathering, Gemini for extraction, deterministic rule for the buildability verdict. Gated is a finding, not a failure.</p>`;
+   <p class="muted">Method: 10-app pilot using Composio session tools for gathering, Gemini for extraction, and a deterministic rule for the buildability verdict. Gated is a finding, not a failure.</p>`;
 
 render();
 </script>
