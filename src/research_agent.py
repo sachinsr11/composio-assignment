@@ -49,6 +49,10 @@ EVIDENCE_LIMIT = 18000
 SLUG_RE = re.compile(r"^[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+$")
 URL_RE = re.compile(r"https?://[^\s\"'<>\\]+")
 
+# Evidence links should be documentation pages, not site chrome or images.
+IMAGE_EXT = (".svg", ".png", ".jpg", ".jpeg", ".gif", ".ico", ".webp", ".css", ".js")
+BAD_URL_TOKENS = ("favicon", "og-image", "opengraph", "logo.", "/assets/", "sprite", "icon.")
+
 EXTRACT_PROMPT = """You are a precise API research analyst. You will get evidence text gathered from the public web about one software product and must extract facts about its developer/API surface.
 
 RULES:
@@ -67,7 +71,7 @@ Required JSON shape:
   "api_types": ["REST", "GraphQL", "webhook", "SDK", "none"...],
   "api_breadth": "broad | moderate | limited | none | unknown",
   "api_notes": "rough size/coverage of the public surface",
-  "mcp": "official | community | none | unclear",
+  "mcp": "official | community | unclear — use 'none' ONLY with explicit evidence that no MCP server exists; otherwise 'unclear'",
   "main_blocker": "the single biggest thing stopping an agent toolkit today, or none",
   "evidence_urls": ["2-5 documentation URLs you relied on; exclude images, favicons, CSS and nav assets"],
   "confidence": 0.0
@@ -133,6 +137,31 @@ def collect_slugs(obj: Any, acc: set[str] | None = None) -> set[str]:
         for item in obj:
             collect_slugs(item, acc)
     return acc
+
+
+def clean_urls(urls: Any) -> list[str]:
+    """Drop favicons, images, malformed and template URLs from evidence links."""
+    out: list[str] = []
+    if not urls:
+        return out
+    if isinstance(urls, str):
+        urls = [urls]
+    for url in urls:
+        if not isinstance(url, str):
+            continue
+        s = url.strip().rstrip("`.,;)]}\"'")
+        if not s.startswith(("http://", "https://")):
+            continue
+        if any(c in s for c in "{}`"):
+            continue
+        low = s.lower().split("?")[0]
+        if low.endswith(IMAGE_EXT):
+            continue
+        if any(t in low for t in BAD_URL_TOKENS):
+            continue
+        if s not in out:
+            out.append(s)
+    return out
 
 
 def extract_urls(obj: Any, limit: int = 25) -> list[str]:
@@ -231,7 +260,7 @@ class Researcher:
         return last
 
     def gather(self, app: str, hint: str) -> tuple[str, list[str]]:
-        query = f"{app} API documentation authentication {hint}"
+        query = f"{app} API documentation authentication MCP server {hint}"
         res = self._try_args(
             self.search_slug,
             [{"query": query}, {"q": query}, {"search_query": query}],
@@ -391,10 +420,8 @@ def main() -> None:
             raw[key] = {"id": app["id"], "app": app["app"], "hint": app["hint"], "error": facts["error"]}
             save_raw(raw)
             continue
-        facts.setdefault("evidence_urls", [])
-        for url in urls:
-            if url not in facts["evidence_urls"]:
-                facts["evidence_urls"].append(url)
+        combined = list(facts.get("evidence_urls") or []) + list(urls)
+        facts["evidence_urls"] = clean_urls(combined)
 
         # Verdict LAST — after category, auth, access and API surface are known.
         verdict, blocker, reason = derive_buildability(facts)

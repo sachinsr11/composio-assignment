@@ -1,59 +1,97 @@
 {
-  "total": 10,
+  "total": 100,
   "auth": {
-    "Token": 9,
-    "OAuth2": 8,
-    "Basic": 4,
-    "API key": 2
+    "Token": 73,
+    "OAuth2": 66,
+    "API key": 38,
+    "Basic": 21,
+    "other": 9,
+    "Session-based": 1,
+    "Unknown": 1
   },
   "access": {
-    "self-serve": 7,
-    "paid-plan": 3
+    "self-serve": 77,
+    "paid-plan": 12,
+    "unclear": 6,
+    "contact-sales": 2,
+    "admin-approval": 2,
+    "free-trial": 1
   },
   "buildability": {
-    "yes": 7,
-    "partial": 3
+    "yes": 76,
+    "partial": 18,
+    "no": 6
   },
   "mcp": {
-    "none": 10
+    "not assessed": 91,
+    "official": 9
   },
   "top_blockers": {
-    "Requires a paid enterprise subscription or developer/sandbox organization setup to generate connected apps and API credentials.": 1,
-    "Zendesk requires a Zendesk account and subscription to access API features, with credentials managed via the Zendesk Admin Center or OAuth client setup.": 1,
-    "Requires enterprise Google Cloud setup and licensing rather than self-serve consumer API keys.": 1
+    "Paid plan required": 12,
+    "Other": 7,
+    "Requires approval": 3,
+    "No public API": 2,
+    "Complex enterprise setup": 1
   },
   "category_access": {
     "AI Research and Media-native": {
-      "paid-plan": 1
+      "paid-plan": 2,
+      "contact-sales": 1,
+      "self-serve": 6,
+      "unclear": 1
     },
     "CRM and Sales": {
-      "paid-plan": 1
+      "paid-plan": 1,
+      "self-serve": 8,
+      "contact-sales": 1
     },
     "Communications and Messaging": {
-      "self-serve": 1
+      "self-serve": 10
     },
     "Data SEO and Scraping": {
-      "self-serve": 1
+      "self-serve": 7,
+      "paid-plan": 2,
+      "unclear": 1
     },
     "Developer Infra and Data platforms": {
-      "self-serve": 1
+      "self-serve": 9,
+      "paid-plan": 1
     },
     "Ecommerce": {
-      "self-serve": 1
+      "self-serve": 7,
+      "unclear": 1,
+      "paid-plan": 1,
+      "admin-approval": 1
     },
     "Finance and Fintech": {
-      "self-serve": 1
+      "self-serve": 7,
+      "free-trial": 1,
+      "paid-plan": 2
     },
     "Marketing Ads Email and Social": {
-      "self-serve": 1
+      "self-serve": 8,
+      "paid-plan": 1,
+      "admin-approval": 1
     },
     "Productivity and Project Management": {
-      "self-serve": 1
+      "self-serve": 9,
+      "unclear": 1
     },
     "Support and Helpdesk": {
-      "paid-plan": 1
+      "paid-plan": 2,
+      "self-serve": 6,
+      "unclear": 2
     }
   },
+  "access_order": [
+    "self-serve",
+    "free-trial",
+    "paid-plan",
+    "admin-approval",
+    "partnership",
+    "contact-sales",
+    "unclear"
+  ],
   "easy_wins": [
     "Slack",
     "Google Ads",
@@ -61,11 +99,89 @@
     "DataForSEO",
     "GitHub",
     "Notion",
-    "Stripe"
+    "Stripe",
+    "HubSpot",
+    "Pipedrive",
+    "Attio",
+    "Twenty",
+    "Podio",
+    "Zoho CRM",
+    "Close",
+    "Copper",
+    "Intercom",
+    "Freshdesk",
+    "Front",
+    "LiveAgent",
+    "Plain",
+    "Help Scout",
+    "Twilio",
+    "Zoho Cliq",
+    "Lark",
+    "Pumble",
+    "Discord",
+    "Telegram",
+    "WhatsApp Business",
+    "Aircall",
+    "Vonage",
+    "Meta Ads",
+    "LinkedIn Ads",
+    "Mailchimp",
+    "Klaviyo",
+    "systeme.io",
+    "Threads",
+    "SendGrid",
+    "WooCommerce",
+    "BigCommerce",
+    "Magento",
+    "Ecwid",
+    "Gumroad",
+    "fanbasis",
+    "MrScraper",
+    "Apify",
+    "Firecrawl",
+    "Bright Data",
+    "Clay",
+    "Vercel",
+    "Netlify",
+    "Cloudflare",
+    "Supabase",
+    "Neo4j",
+    "MongoDB Atlas",
+    "Datadog",
+    "Sentry",
+    "Airtable",
+    "Linear",
+    "Jira",
+    "Asana",
+    "Monday.com",
+    "ClickUp",
+    "Coda",
+    "Harvest",
+    "Plaid",
+    "Binance",
+    "Paygent Connect",
+    "QuickBooks",
+    "Xero",
+    "Ramp",
+    "Fathom",
+    "Reducto",
+    "higgsfield",
+    "Mermaid CLI",
+    "YouTube Transcript",
+    "Grain"
   ],
-  "needs_outreach": [],
-  "no_public_api": [],
-  "self_serve_share": 0.7,
-  "buildable_share": 0.7,
-  "oauth_share": 0.8
+  "needs_outreach": [
+    "DealCloud",
+    "Pinterest",
+    "Amazon Selling Partner",
+    "Otter AI"
+  ],
+  "no_public_api": [
+    "Sherlock",
+    "Smartsheet"
+  ],
+  "self_serve_share": 0.77,
+  "buildable_share": 0.76,
+  "oauth_apps": 66,
+  "oauth_share": 0.66
 }

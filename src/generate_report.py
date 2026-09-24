@@ -19,12 +19,14 @@ AGENT_PATH = DATA_DIR / "agent_verification.json"
 ACCURACY_PATH = DATA_DIR / "accuracy.json"
 OUT_PATH = ROOT / "index.html"
 
+REPO_URL = "https://github.com/sachinsr11/composio-assignment"
+
 TEMPLATE = r"""<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>10-App Pilot — Agent Buildability Study</title>
+<title>100 Apps — Agent Toolkits: What's Buildable Today</title>
 <style>
   :root { --bg:#0b0f17; --panel:#131a26; --panel-2:#182235; --line:#2a3951; --txt:#e6edf6; --mut:#9eacc1; --acc:#78b0ff;
           --yes:#1f8a4c; --partial:#a8760a; --no:#b3363f; }
@@ -33,13 +35,11 @@ TEMPLATE = r"""<!doctype html>
   a { color:var(--acc); }
   header { padding:56px 24px 30px; border-bottom:1px solid var(--line); background:radial-gradient(circle at 12% 0%,#1b3557 0,#101a2b 38%,#0b0f17 78%); }
   .wrap { max-width:1240px; margin:0 auto; }
-  h1 { max-width:850px; margin:0 0 10px; font-size:clamp(30px,5vw,48px); line-height:1.08; letter-spacing:-1.2px; }
+  h1 { max-width:900px; margin:0 0 10px; font-size:clamp(30px,5vw,46px); line-height:1.08; letter-spacing:-1.2px; }
   h2 { margin:38px 0 12px; font-size:22px; letter-spacing:-.25px; }
-  h3 { margin:0 0 5px; font-size:16px; }
-  .sub { max-width:900px; color:var(--mut); margin:0; font-size:16px; }
+  .sub { max-width:920px; color:var(--mut); margin:0; font-size:16px; }
+  .method-note { margin:22px 0 4px; padding:12px 15px; background:rgba(120,176,255,.1); border:1px solid rgba(120,176,255,.35); border-radius:10px; color:#d5e5fb; }
   section { padding:12px 24px 24px; }
-  .eyebrow { margin:0 0 12px; color:var(--acc); font-size:12px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; }
-  .pilot-note { margin:22px 0 4px; padding:12px 15px; background:rgba(120,176,255,.1); border:1px solid rgba(120,176,255,.35); border-radius:10px; color:#d5e5fb; }
   .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin:18px 0; }
   .card { background:linear-gradient(145deg,var(--panel-2),var(--panel)); border:1px solid var(--line); border-radius:12px; padding:16px; }
   .card .n { font-size:30px; line-height:1.1; font-weight:750; }
@@ -64,7 +64,6 @@ TEMPLATE = r"""<!doctype html>
   .chip{ display:inline-block; padding:1px 7px; margin:1px 3px 1px 0; border:1px solid var(--line); border-radius:6px; color:var(--mut); font-size:11.5px; }
   .muted{ color:var(--mut); }
   code { background:#0a0f18; border:1px solid var(--line); border-radius:6px; padding:1px 6px; font-size:12.5px; }
-  pre { background:#0a0f18; border:1px solid var(--line); border-radius:10px; padding:14px; overflow:auto; font-size:12.5px; }
   .note { background:#101826; border-left:3px solid var(--acc); padding:12px 15px; border-radius:0 8px 8px 0; color:#c9d6ea; }
   footer { padding:24px; color:var(--mut); border-top:1px solid var(--line); margin-top:30px; }
   .pill{ font-size:12px; color:var(--mut); }
@@ -73,10 +72,12 @@ TEMPLATE = r"""<!doctype html>
 <body>
 <header>
   <div class="wrap">
-    <p class="eyebrow">Research case study · pilot stage</p>
-    <h1>10-App Pilot → Agent Toolkits: What's Buildable Today</h1>
-    <p class="sub">An agent researched auth, access gates and API surface for <b>10 of 100 target apps</b> (one per category). Patterns below are drawn from this pilot only and are not presented as representative of the full 100. <span id="stamp" class="pill"></span></p>
-    <p class="pilot-note"><b>Read this as a pilot, not a final market estimate.</b> The next step is human verification, prompt tuning, and then research on the remaining 90 apps.</p>
+    <h1>100 Apps → Agent Toolkits: What's Buildable Today</h1>
+    <p class="sub">An agent researched <b>100 apps</b> (10 per category) for auth, self-serve vs gated access,
+      API surface and MCP, derived a buildability verdict, and clustered the patterns. <span id="stamp" class="pill"></span></p>
+    <p class="method-note"><b>Method:</b> Composio v3 session tools gathered public docs; Gemini extracted facts as JSON;
+      the buildability verdict is a deterministic rule applied <i>after</i> the facts. MCP was <b>not explicitly assessed</b>
+      in this pass, so it is reported as "not assessed" — never assumed "none".</p>
   </div>
 </header>
 
@@ -88,14 +89,19 @@ TEMPLATE = r"""<!doctype html>
       <ul id="patterns"></ul>
     </div>
     <div>
-      <h2>Where the friction is</h2>
+      <h2>Most common blockers</h2>
       <ul id="friction"></ul>
     </div>
   </div>
 </section>
 
 <section class="wrap">
-  <h2>Pilot results — 10 of 100 target apps</h2>
+  <h2>Self-serve vs gated, by category</h2>
+  <div id="matrix"></div>
+</section>
+
+<section class="wrap">
+  <h2>All 100 apps</h2>
   <div class="controls">
     <input id="q" placeholder="Search app, category, auth…" style="min-width:260px" />
     <button data-f="all" class="active">All</button>
@@ -133,38 +139,61 @@ TEMPLATE = r"""<!doctype html>
 
 <script>
 const DATA = /*__DATA__*/;
-const { apps, insights, verification, accuracy } = DATA;
-const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const pct = n => Math.round(n*100) + "%";
+const apps = DATA.apps || [];
+const I = DATA.insights || {};
+const authC = I.auth || {};
+const accessC = I.access || {};
+const buildC = I.buildability || {};
+const mcpC = I.mcp || {};
+const blockersC = I.top_blockers || {};
+const catAccess = I.category_access || {};
+const accessOrder = I.access_order || ["self-serve","free-trial","paid-plan","admin-approval","partnership","contact-sales","unclear"];
+const easyWins = I.easy_wins || [];
+const needsOutreach = I.needs_outreach || [];
+const noApi = I.no_public_api || [];
+const oauthApps = I.oauth_apps || authC["OAuth2"] || 0;
+const verification = DATA.verification;
+const accuracy = DATA.accuracy;
 
-document.getElementById("stamp").textContent = "Generated " + DATA.generated;
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const pct = n => Math.round((n || 0) * 100) + "%";
+const mcpLabel = v => (v === "none" || v === "unclear" || !v) ? "not assessed" : v;
+
+document.getElementById("stamp").textContent = "Generated " + (DATA.generated || "");
 
 const cards = [
   [apps.length, "Apps researched"],
-  [pct(insights.oauth_share), "Use OAuth2"],
-  [pct(insights.self_serve_share), "Self-serve access"],
-  [insights.buildability.yes || 0, "Buildable now"],
-  [(insights.needs_outreach||[]).length, "Need outreach"],
-  [(insights.no_public_api||[]).length, "No public API"],
+  [oauthApps, "Apps with OAuth2"],
+  [pct(I.self_serve_share), "Self-serve access"],
+  [buildC.yes || 0, "Buildable now"],
+  [buildC.partial || 0, "Partial"],
+  [noApi.length, "No public API"],
 ];
 document.getElementById("cards").innerHTML = cards.map(([n,l]) =>
   `<div class="card"><div class="n">${esc(n)}</div><div class="l">${esc(l)}</div></div>`).join("");
 
-const topAuth = Object.entries(insights.auth).slice(0,4).map(([k,v])=>`${k} (${v})`).join(", ");
-const topAccess = Object.entries(insights.access).slice(0,4).map(([k,v])=>`${k} (${v})`).join(", ");
+const authList = Object.entries(authC).map(([k,v])=>`${k} ${v}`).join(", ");
+const accessList = Object.entries(accessC).map(([k,v])=>`${k} ${v}`).join(", ");
+const topMethod = Object.entries(authC)[0] || ["n/a", 0];
 const patterns = [
-  `<b>Pilot:</b> <b>${pct(insights.oauth_share)}</b> of the 10 apps use <b>OAuth2</b> — the dominant auth pattern so far. Auth mix: ${esc(topAuth)}.`,
-  `<b>Pilot:</b> <b>${pct(insights.self_serve_share)}</b> offer self-serve credentials. Access mix: ${esc(topAccess)}.`,
-  `<b>Pilot:</b> <b>${insights.buildability.yes||0}</b> are buildable today, <b>${insights.buildability.partial||0}</b> partial, <b>${insights.buildability.no||0}</b> blocked.`,
-  `<b>Pilot MCP landscape:</b> ${esc(Object.entries(insights.mcp).map(([k,v])=>`${k} (${v})`).join(", "))}.`,
+  `Auth is mixed. Most common method: <b>${esc(topMethod[0])} (${topMethod[1]}/${apps.length})</b>. <b>OAuth2</b> appears on <b>${oauthApps}</b> apps. Counts (apps can use more than one): ${esc(authList)}.`,
+  `<b>${pct(I.self_serve_share)}</b> offer self-serve credentials. Access mix: ${esc(accessList)}.`,
+  `<b>${buildC.yes||0}</b> buildable today, <b>${buildC.partial||0}</b> partial, <b>${buildC.no||0}</b> blocked. Easy wins (self-serve + public API): <b>${easyWins.length}</b>.`,
+  `MCP: <b>${mcpC["official"]||0}</b> apps have a known official MCP server; <b>${mcpC["not assessed"]||0}</b> were <b>not assessed</b> (this pass did not target MCP).`,
 ];
 document.getElementById("patterns").innerHTML = patterns.map(p=>`<li>${p}</li>`).join("");
 
-const blockers = Object.entries(insights.top_blockers).slice(0,6);
-document.getElementById("friction").innerHTML =
-  `<li><b>Pilot:</b> Most common blocker: <b>${esc(blockers[0]?.[0] || "n/a")}</b>${blockers[0]?` (${blockers[0][1]} of 10)`:""}.</li>` +
-  blockers.slice(1).map(([k,v])=>`<li><b>Pilot:</b> ${esc(k)} — ${v} of 10</li>`).join("") +
-  `<li><b>Pilot easy wins</b> (self-serve + public API): <b>${(insights.easy_wins||[]).length}</b> of 10 apps.</li>`;
+const blockerRows = Object.entries(blockersC);
+document.getElementById("friction").innerHTML = blockerRows.length
+  ? blockerRows.map(([k,v])=>`<li><b>${esc(k)}</b> — ${v} apps</li>`).join("")
+  : `<li class="muted">No blocker categories recorded.</li>`;
+
+const cats = Object.keys(catAccess).sort();
+document.getElementById("matrix").innerHTML = cats.length
+  ? `<div class="table-wrap"><table><thead><tr><th>Category</th>${accessOrder.map(a=>`<th>${esc(a)}</th>`).join("")}</tr></thead><tbody>` +
+    cats.map(c=>`<tr><td><b>${esc(c)}</b></td>` + accessOrder.map(a=>`<td>${esc(catAccess[c][a] || "")}</td>`).join("") + `</tr>`).join("") +
+    `</tbody></table></div>`
+  : `<p class="muted">Access matrix unavailable.</p>`;
 
 const accessColor = a => ({"self-serve":"b-yes","free-trial":"b-partial","paid-plan":"b-partial","admin-approval":"b-no","partnership":"b-no","contact-sales":"b-no"}[a] || "");
 let filter = "all", sortKey = "app", asc = true;
@@ -189,7 +218,7 @@ function render(){
       <td>${auth||'<span class="muted">unknown</span>'}</td>
       <td><span class="badge ${accessColor(r.access)}">${esc(r.access)}</span></td>
       <td>${api}</td>
-      <td>${esc(r.mcp)}</td>
+      <td class="muted">${esc(mcpLabel(r.mcp))}</td>
       <td><span class="badge b-${esc(r.buildability)}">${esc(r.buildability)}</span></td>
       <td class="muted">${esc(r.main_blocker||"—")}</td>
       <td>${ev}</td>
@@ -206,20 +235,22 @@ document.querySelectorAll("button[data-f]").forEach(b=>b.onclick=()=>{
 document.getElementById("q").oninput = render;
 
 document.getElementById("agent").innerHTML = `
-  <p>One agent per app, built on <b>Composio v3 sessions</b> + <b>Gemini</b>:</p>
+  <p>One agent per app, built on <b>Composio v3 sessions</b> + <b>Gemini</b> (<code>composio</code>, <code>composio_gemini</code>, <code>google-genai</code>):</p>
   <ol>
     <li><b>Discover</b> search/scrape tool slugs at runtime with <code>COMPOSIO_SEARCH_TOOLS</code> (nothing hardcoded).</li>
     <li><b>Gather</b> official docs via those Composio tools.</li>
-    <li><b>Extract</b> category, auth, access and API surface with Gemini (JSON output).</li>
+    <li><b>Extract</b> category, auth, access, API surface with Gemini (JSON output).</li>
     <li><b>Derive the buildability verdict last</b>, from the facts above — never guessed upfront.</li>
   </ol>
-  <p class="note"><b>Where a human is needed:</b> review ambiguous access classifications and validate cited evidence before scaling to the remaining 90 apps.</p>`;
+  <p class="note"><b>Where a human is needed:</b> review ambiguous access classifications (e.g. free developer editions counted as paid), confirm MCP status app-by-app, and validate cited evidence before treating any pattern as settled.</p>`;
 
-const v = verification?.summary;
-let vhtml = `<p>Verification is the next step in the pipeline. The repository contains the verification workflow and checklist (<code>src/verify.py</code>, <code>data/human_checklist.csv</code>) for reproducibility.</p>`;
+const v = verification && verification.summary;
+let vhtml = "";
 if (v) {
-  vhtml += `<p>The agent re-fetched fresh evidence and audited each field against it (skeptical re-prompt).</p>`;
-  vhtml += `<p><b>Agent self-check:</b> ${pct(v.accuracy)} of fields supported (${v.correct}/${v.fields}) across ${v.apps} apps.</p>`;
+  vhtml += `<p>The agent re-fetched fresh evidence and audited every extracted field against it (skeptical re-prompt).</p>`;
+  vhtml += `<p><b>Agent self-check:</b> <b>${pct(v.accuracy)}</b> of fields supported (${v.correct}/${v.fields}) across ${v.apps} apps.</p>`;
+} else {
+  vhtml += `<p class="muted"><b>Agent self-check not run yet.</b> Run <code>python src/verify.py</code> to produce it.</p>`;
 }
 if (accuracy) {
   vhtml += `<p><b>Human ground truth</b> on ${accuracy.human_checked_apps} apps:
@@ -228,17 +259,21 @@ if (accuracy) {
     Object.entries(accuracy.per_field).map(([f,d])=>`<tr><td>${esc(f)}</td><td>${pct(d.first_accuracy)}</td><td>${pct(d.fixed_accuracy)}</td></tr>`).join("") +
     `</tbody></table>`;
 } else {
-  vhtml += `<p class="muted"><b>Agent self-check and human verification are pending.</b> Run <code>python src/verify.py</code> to produce the agent audit and human checklist, then fill <code>data/human_corrections.json</code> and re-run.</p>`;
+  vhtml += `<p class="muted"><b>Human verification is pending.</b> The repo ships the workflow and checklist for it:
+    <code>python src/verify.py</code> writes <code>data/human_checklist.csv</code>; fill <code>data/human_corrections.json</code> and re-run to score first-pass vs after-loop accuracy.</p>`;
 }
-if (verification?.apps) {
-  const misses = verification.apps.filter(a=>a.correct < a.total).slice(0,6);
-  if (misses.length) vhtml += `<p><b>Honest misses:</b></p><ul>` + misses.map(a=>`<li>${esc(a.app)} — ${a.correct}/${a.total} fields supported</li>`).join("") + `</ul>`;
+if (verification && verification.apps) {
+  const misses = verification.apps.filter(a=>a.correct < a.total).slice(0,8);
+  if (misses.length) vhtml += `<p><b>Honest misses (fields not supported by fresh evidence):</b></p><ul>` +
+    misses.map(a=>`<li>${esc(a.app)} — ${a.correct}/${a.total} fields supported</li>`).join("") + `</ul>`;
 }
 document.getElementById("verify").innerHTML = vhtml;
 
 document.getElementById("foot").innerHTML =
-  `<p>Source: <a href="https://github.com/" id="repo">repository</a> · <a href="data/raw_results.json">raw results JSON</a> · <a href="data/insights.json">insights JSON</a></p>
-   <p class="muted">Method: 10-app pilot using Composio session tools for gathering, Gemini for extraction, and a deterministic rule for the buildability verdict. Gated is a finding, not a failure.</p>`;
+  `<p>Source: <a href="REPO_URL" target="_blank" rel="noopener">github.com/sachinsr11/composio-assignment</a> ·
+      <a href="data/raw_results.json">raw results JSON</a> · <a href="data/insights.json">insights JSON</a></p>
+   <p class="muted">Method: Composio session tools for gathering, Gemini for extraction, deterministic rule for the buildability verdict.
+      MCP is reported as "not assessed" where the evidence did not cover it. Gated is a finding, not a failure.</p>`;
 
 render();
 </script>
@@ -263,7 +298,8 @@ def main() -> None:
         "generated": __import__("time").strftime("%Y-%m-%d %H:%M"),
     }
     data_js = json.dumps(payload, ensure_ascii=False).replace("</", "<\\/")
-    OUT_PATH.write_text(TEMPLATE.replace("/*__DATA__*/", data_js), encoding="utf-8")
+    html = TEMPLATE.replace("/*__DATA__*/", data_js).replace("REPO_URL", REPO_URL)
+    OUT_PATH.write_text(html, encoding="utf-8")
     print(f"Wrote {OUT_PATH} ({len(apps)} apps)")
 
 

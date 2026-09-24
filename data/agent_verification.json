@@ -1,0 +1,1896 @@
+{
+  "apps": [
+    {
+      "id": 1,
+      "app": "Salesforce",
+      "fields": {
+        "category": {
+          "agent": "CRM and Sales",
+          "correct": true,
+          "corrected": "CRM and Sales",
+          "note": "Salesforce is primarily a CRM and sales platform."
+        },
+        "auth_methods": {
+          "agent": [
+            "OAuth2",
+            "Bearer token"
+          ],
+          "correct": false,
+          "corrected": [
+            "OAuth 2.0 with PKCE"
+          ],
+          "note": "The evidence specifies using OAuth settings with the Authorization Code flow and PKCE for MCP client authentication."
+        },
+        "access": {
+          "agent": "paid-plan",
+          "correct": true,
+          "corrected": "paid-plan",
+          "note": "Salesforce is a commercial enterprise platform typically requiring a paid subscription or specialized org setup."
+        },
+        "api_types": {
+          "agent": [
+            "REST",
+            "SOAP",
+            "webhook"
+          ],
+          "correct": false,
+          "corrected": [
+            "MCP"
+          ],
+          "note": "The fresh evidence specifically covers Salesforce Hosted MCP Servers and API integration via External Client Apps."
+        },
+        "api_breadth": {
+          "agent": "broad",
+          "correct": true,
+          "corrected": "broad",
+          "note": "Salesforce provides an extensive suite of APIs."
+        },
+        "mcp": {
+          "agent": "none",
+          "correct": false,
+          "corrected": "native",
+          "note": "The evidence explicitly provides documentation and guidelines for Salesforce Hosted MCP Servers and connecting MCP clients."
+        },
+        "main_blocker": {
+          "agent": "Requires a paid enterprise subscription or developer/sandbox organization setup to generate connected apps and API credentials.",
+          "correct": false,
+          "corrected": "Requires registering an External Client App (Connected Apps are not supported) and using OAuth with PKCE and specific scopes like mcp_api.",
+          "note": "The actual blocker/requirement mentioned in the text for MCP integration is setting up an External Client App with specific scopes and PKCE rather than generic paid plan blockers."
+        }
+      },
+      "correct": 3,
+      "total": 7,
+      "accuracy": 0.429
+    },
+    {
+      "id": 11,
+      "app": "Zendesk",
+      "fields": {
+        "category": {
+          "agent": "Support and Helpdesk",
+          "correct": true,
+          "corrected": "Support and Helpdesk",
+          "note": "Zendesk is a standard support and helpdesk software platform."
+        },
+        "auth_methods": {
+          "agent": [
+            "OAuth2",
+            "Basic",
+            "Bearer token"
+          ],
+          "correct": false,
+          "corrected": [
+            "OAuth2"
+          ],
+          "note": "The evidence explicitly states that OAuth is the only supported authentication method for MCP server connections in Zendesk."
+        },
+        "access": {
+          "agent": "paid-plan",
+          "correct": true,
+          "corrected": "paid-plan",
+          "note": "Zendesk requires appropriate Suite/Support subscription tiers to use these features."
+        },
+        "api_types": {
+          "agent": [
+            "REST"
+          ],
+          "correct": true,
+          "corrected": [
+            "REST"
+          ],
+          "note": "Standard API types for Zendesk remain REST."
+        },
+        "api_breadth": {
+          "agent": "broad",
+          "correct": true,
+          "corrected": "broad",
+          "note": "Broad API coverage is standard for Zendesk."
+        },
+        "mcp": {
+          "agent": "none",
+          "correct": false,
+          "corrected": "native",
+          "note": "The evidence shows Zendesk provides official, native support for connecting to external Model Context Protocol (MCP) servers directly through its Admin Center and action flows."
+        },
+        "main_blocker": {
+          "agent": "Zendesk requires a Zendesk account and subscription to access API features, with credentials managed via the Zendesk Admin Center or OAuth client setup.",
+          "correct": true,
+          "corrected": "Zendesk requires a Zendesk account and subscription to access API features, with credentials managed via the Zendesk Admin Center or OAuth client setup.",
+          "note": "Accurately reflects the subscription and Admin Center requirements shown in the documentation."
+        }
+      },
+      "correct": 5,
+      "total": 7,
+      "accuracy": 0.714
+    },
+    {
+      "id": 21,
+      "app": "Slack",
+      "fields": {
+        "category": {
+          "agent": "Communications and Messaging",
+          "correct": true,
+          "corrected": "Communications and Messaging",
+          "note": "The category correctly identifies Slack as a communications and messaging application."
+        },
+        "auth_methods": {
+          "agent": [
+            "OAuth2",
+            "Bearer token"
+          ],
+          "correct": true,
+          "corrected": [
+            "OAuth2",
+            "Bearer token"
+          ],
+          "note": "The evidence explicitly confirms OAuth-backed authentication endpoints for the Slack MCP server (client_id, client_secret, authorize and exchange endpoints)."
+        },
+        "access": {
+          "agent": "self-serve",
+          "correct": true,
+          "corrected": "self-serve",
+          "note": "Access model is self-serve via registering a Slack app and using standard OAuth flows."
+        },
+        "api_types": {
+          "agent": [
+            "REST",
+            "webhook"
+          ],
+          "correct": false,
+          "corrected": [
+            "JSON-RPC",
+            "REST",
+            "webhook"
+          ],
+          "note": "The fresh evidence indicates that Slack uses Model Context Protocol (MCP) over Streamable HTTP via JSON-RPC 2.0, in addition to standard REST and webhooks."
+        },
+        "api_breadth": {
+          "agent": "broad",
+          "correct": true,
+          "corrected": "broad",
+          "note": "Slack provides extensive APIs covering messaging, admin controls, apps, and MCP servers."
+        },
+        "mcp": {
+          "agent": "none",
+          "correct": false,
+          "corrected": "native",
+          "note": "The fresh evidence clearly documents a native Slack MCP server hosted at https://mcp.slack.com/mcp supporting OAuth-backed MCP clients."
+        },
+        "main_blocker": {
+          "agent": "",
+          "correct": true,
+          "corrected": "",
+          "note": "No significant technical blocker indicated beyond standard OAuth setup."
+        }
+      },
+      "correct": 5,
+      "total": 7,
+      "accuracy": 0.714
+    },
+    {
+      "id": 31,
+      "app": "Google Ads",
+      "fields": {
+        "category": {
+          "agent": "Marketing, Ads, Email and Social",
+          "correct": true,
+          "corrected": "Marketing, Ads, Email and Social",
+          "note": "The category accurately reflects Google Ads."
+        },
+        "auth_methods": {
+          "agent": [
+            "OAuth2",
+            "Bearer token",
+            "API key"
+          ],
+          "correct": false,
+          "corrected": [
+            "OAuth 2.0",
+            "Application Default Credentials (ADC)"
+          ],
+          "note": "The evidence specifies authentication via OAuth 2.0 or Application Default Credentials / service account, not Bearer token or API key directly."
+        },
+        "access": {
+          "agent": "self-serve",
+          "correct": true,
+          "corrected": "self-serve",
+          "note": "Google Ads developer accounts can be created self-serve."
+        },
+        "api_types": {
+          "agent": [
+            "REST",
+            "gRPC",
+            "SDK"
+          ],
+          "correct": true,
+          "corrected": [
+            "REST",
+            "gRPC",
+            "SDK"
+          ],
+          "note": "Standard Google Ads API interfaces include REST and gRPC with various SDKs."
+        },
+        "api_breadth": {
+          "agent": "broad",
+          "correct": true,
+          "corrected": "broad",
+          "note": "The Google Ads API covers broad campaign management and reporting features."
+        },
+        "mcp": {
+          "agent": "none",
+          "correct": false,
+          "corrected": "native",
+          "note": "The evidence explicitly describes an official Google Ads Model Context Protocol (MCP) server provided by Google."
+        },
+        "main_blocker": {
+          "agent": "",
+          "correct": false,
+          "corrected": "Requires a Google Ads developer token and OAuth credentials/project ID.",
+          "note": "Accessing the Google Ads API and MCP requires a developer token, project ID, and appropriate OAuth credentials."
+        }
+      },
+      "correct": 4,
+      "total": 7,
+      "accuracy": 0.571
+    },
+    {
+      "id": 41,
+      "app": "Shopify",
+      "fields": {
+        "category": {
+          "agent": "Ecommerce",
+          "correct": true,
+          "corrected": "Ecommerce",
+          "note": "The category correctly identifies Shopify as an ecommerce platform."
+        },
+        "auth_methods": {
+          "agent": [
+            "OAuth2",
+            "Bearer token"
+          ],
+          "correct": true,
+          "corrected": [
+            "OAuth2",
+            "Bearer token"
+          ],
+          "note": "The evidence explicitly mentions OAuth 2.0 with PKCE and JWT passed as a Bearer token."
+        },
+        "access": {
+          "agent": "self-serve",
+          "correct": true,
+          "corrected": "self-serve",
+          "note": "Access is self-serve as developers can run the MCP server locally via npx or generate credentials in the Dev Dashboard."
+        },
+        "api_types": {
+          "agent": [
+            "REST",
+            "GraphQL",
+            "webhook",
+            "SDK"
+          ],
+          "correct": true,
+          "corrected": [
+            "REST",
+            "GraphQL",
+            "webhook",
+            "SDK"
+          ],
+          "note": "The extracted API types align with standard Shopify development practices referenced across documentation."
+        },
+        "api_breadth": {
+          "agent": "broad",
+          "correct": true,
+          "corrected": "broad",
+          "note": "Shopify offers a broad range of APIs covering dev tools, storefronts, customer accounts, webhooks, and agentic commerce (UCP)."
+        },
+        "mcp": {
+          "agent": "none",
+          "correct": false,
+          "corrected": "native",
+          "note": "The evidence heavily documents native Model Context Protocol (MCP) servers provided by Shopify (@shopify/dev-mcp, Customer Accounts MCP, UCP MCP servers)."
+        },
+        "main_blocker": {
+          "agent": "",
+          "correct": true,
+          "corrected": "",
+          "note": "No specific blocker is identified in the fresh evidence regarding access or usage."
+        }
+      },
+      "correct": 6,
+      "total": 7,
+      "accuracy": 0.857
+    },
+    {
+      "id": 51,
+      "app": "DataForSEO",
+      "fields": {
+        "category": {
+          "agent": "Data, SEO and Scraping",
+          "correct": true,
+          "corrected": "Data, SEO and Scraping",
+          "note": "The category correctly reflects SEO and data extraction services provided by DataForSEO."
+        },
+        "auth_methods": {
+          "agent": [
+            "Basic"
+          ],
+          "correct": true,
+          "corrected": [
+            "Basic"
+          ],
+          "note": "The documentation explicitly states that DataForSEO uses HTTP Basic Authentication with API credentials encoded in Base64."
+        },
+        "access": {
+          "agent": "self-serve",
+          "correct": true,
+          "corrected": "self-serve",
+          "note": "Users can obtain API credentials directly from their dashboard at https://app.dataforseo.com/api-access."
+        },
+        "api_types": {
+          "agent": [
+            "REST"
+          ],
+          "correct": true,
+          "corrected": [
+            "REST"
+          ],
+          "note": "The API is accessed via standard HTTP requests and REST principles."
+        },
+        "api_breadth": {
+          "agent": "moderate",
+          "correct": true,
+          "corrected": "moderate",
+          "note": "The API breadth is correctly categorized as moderate."
+        },
+        "mcp": {
+          "agent": "none",
+          "correct": false,
+          "corrected": "official",
+          "note": "The web evidence explicitly points to an official DataForSEO Model Context Protocol (MCP) server available at https://mcp.dataforseo.com/v3/mcp and associated documentation for connecting it to ChatGPT and CLI."
+        },
+        "main_blocker": {
+          "agent": "",
+          "correct": true,
+          "corrected": "",
+          "note": "No specific access blocker is present."
+        }
+      },
+      "correct": 6,
+      "total": 7,
+      "accuracy": 0.857
+    },
+    {
+      "id": 61,
+      "app": "GitHub",
+      "fields": {
+        "category": {
+          "agent": "Developer Infra and Data platforms",
+          "correct": true,
+          "corrected": "Developer Infra and Data platforms",
+          "note": "The category correctly identifies GitHub as a developer infrastructure and platform tool."
+        },
+        "auth_methods": {
+          "agent": [
+            "OAuth2",
+            "Bearer token",
+            "Basic"
+          ],
+          "correct": false,
+          "corrected": [
+            "OAuth 2.1",
+            "OAuth 2.0",
+            "Personal Access Token (PAT)",
+            "GitHub App installation tokens",
+            "Bearer token"
+          ],
+          "note": "The evidence explicitly states that GitHub MCP servers require access tokens via Authorization Bearer header, using Personal Access Tokens (PATs), OAuth 2.0/2.1, or GitHub App installation tokens. 'Basic' auth is incorrect."
+        },
+        "access": {
+          "agent": "self-serve",
+          "correct": true,
+          "corrected": "self-serve",
+          "note": "Users can generate PATs or set up apps in a self-serve manner."
+        },
+        "api_types": {
+          "agent": [
+            "REST",
+            "webhook",
+            "SDK"
+          ],
+          "correct": false,
+          "corrected": [
+            "MCP",
+            "REST"
+          ],
+          "note": "The product being discussed is the GitHub Model Context Protocol (MCP) server, which uses the Model Context Protocol and underlying GitHub REST/API mechanisms, rather than webhooks or SDKs directly specified as the primary API types for the MCP server."
+        },
+        "api_breadth": {
+          "agent": "broad",
+          "correct": true,
+          "corrected": "broad",
+          "note": "The MCP server accesses a broad set of GitHub resources including repository contents, issues, PRs, workflow runs, etc."
+        },
+        "mcp": {
+          "agent": "none",
+          "correct": false,
+          "corrected": "native",
+          "note": "The subject of the evidence is explicitly the GitHub Model Context Protocol (MCP) server, meaning MCP support is native/first-class."
+        },
+        "main_blocker": {
+          "agent": "",
+          "correct": true,
+          "corrected": "",
+          "note": "No specific main blocker is identified in the extraction or evidence."
+        }
+      },
+      "correct": 4,
+      "total": 7,
+      "accuracy": 0.571
+    },
+    {
+      "id": 71,
+      "app": "Notion",
+      "fields": {
+        "category": {
+          "agent": "Productivity and Project Management",
+          "correct": true,
+          "corrected": "Productivity and Project Management",
+          "note": "Notion is correctly categorized as a productivity and project management tool."
+        },
+        "auth_methods": {
+          "agent": [
+            "OAuth2",
+            "Bearer token"
+          ],
+          "correct": false,
+          "corrected": [
+            "OAuth2"
+          ],
+          "note": "The evidence states the MCP server requires user-based OAuth 2.0 and does not support bearer token authentication for headless workflows."
+        },
+        "access": {
+          "agent": "self-serve",
+          "correct": true,
+          "corrected": "self-serve",
+          "note": "Users can self-serve connect via hosted MCP endpoints using standard OAuth flows."
+        },
+        "api_types": {
+          "agent": [
+            "REST",
+            "SDK",
+            "webhook"
+          ],
+          "correct": false,
+          "corrected": [
+            "MCP"
+          ],
+          "note": "The fresh evidence specifically discusses Notion's hosted Model Context Protocol (MCP) server endpoints (Streamable HTTP and SSE)."
+        },
+        "api_breadth": {
+          "agent": "broad",
+          "correct": true,
+          "corrected": "broad",
+          "note": "The MCP server allows reading and writing to the entire Notion workspace based on access permissions."
+        },
+        "mcp": {
+          "agent": "none",
+          "correct": false,
+          "corrected": "native",
+          "note": "Notion provides a hosted, actively maintained native MCP server at https://mcp.notion.com/mcp."
+        },
+        "main_blocker": {
+          "agent": "",
+          "correct": false,
+          "corrected": "Requires user-based OAuth 2.0 authentication; does not support bearer token authentication for fully automated, headless workflows.",
+          "note": "The evidence explicitly notes this limitation regarding automated/headless use cases."
+        }
+      },
+      "correct": 3,
+      "total": 7,
+      "accuracy": 0.429
+    },
+    {
+      "id": 81,
+      "app": "Stripe",
+      "fields": {
+        "category": {
+          "agent": "Finance and Fintech",
+          "correct": true,
+          "corrected": "Finance and Fintech",
+          "note": "The category correctly identifies Stripe as a finance and fintech platform."
+        },
+        "auth_methods": {
+          "agent": [
+            "API key",
+            "Basic",
+            "Bearer token"
+          ],
+          "correct": false,
+          "corrected": [
+            "OAuth",
+            "Bearer token",
+            "Restricted API key"
+          ],
+          "note": "Evidence shows Stripe MCP authentication is primarily handled via OAuth or via a restricted API key passed as a Bearer token. 'Basic' is not supported."
+        },
+        "access": {
+          "agent": "self-serve",
+          "correct": true,
+          "corrected": "self-serve",
+          "note": "Stripe accounts and MCP setup are self-serve."
+        },
+        "api_types": {
+          "agent": [
+            "REST",
+            "SDK"
+          ],
+          "correct": true,
+          "corrected": [
+            "REST",
+            "SDK"
+          ],
+          "note": "Stripe's core API is REST-based and provides SDKs, and now also offers an MCP server."
+        },
+        "api_breadth": {
+          "agent": "broad",
+          "correct": true,
+          "corrected": "broad",
+          "note": "Stripe has an extensive, broad API surface."
+        },
+        "mcp": {
+          "agent": "none",
+          "correct": false,
+          "corrected": "native",
+          "note": "The evidence explicitly provides a dedicated Stripe Model Context Protocol (MCP) server at https://mcp.stripe.com with agent plugins, tool support, and setup instructions for various clients."
+        },
+        "main_blocker": {
+          "agent": "",
+          "correct": true,
+          "corrected": "",
+          "note": "No specific blocker mentioned in the evidence."
+        }
+      },
+      "correct": 5,
+      "total": 7,
+      "accuracy": 0.714
+    },
+    {
+      "id": 91,
+      "app": "NotebookLM",
+      "fields": {
+        "category": {
+          "agent": "AI, Research and Media-native",
+          "correct": true,
+          "corrected": "AI, Research and Media-native",
+          "note": "The category correctly describes NotebookLM as an AI-powered research and media-native tool."
+        },
+        "auth_methods": {
+          "agent": [
+            "OAuth2",
+            "Bearer token"
+          ],
+          "correct": false,
+          "corrected": [
+            "Google session cookies",
+            "Managed browser session"
+          ],
+          "note": "Evidence shows authentication is done by extracting Google session cookies via `nlm login` and a managed browser session, not OAuth2 or Bearer tokens directly."
+        },
+        "access": {
+          "agent": "paid-plan",
+          "correct": false,
+          "corrected": "free / consumer account (via session extraction)",
+          "note": "The tool uses extracted user browser session cookies from standard Google accounts, not a paid-plan enterprise cloud setup."
+        },
+        "api_types": {
+          "agent": [
+            "REST"
+          ],
+          "correct": false,
+          "corrected": [
+            "RPC (batchexecute)"
+          ],
+          "note": "The evidence states that the integration uses the Google `batchexecute` RPC protocol, not standard REST APIs."
+        },
+        "api_breadth": {
+          "agent": "limited",
+          "correct": false,
+          "corrected": "comprehensive",
+          "note": "The MCP/CLI client supports notebooks, sources, chat settings, summaries, web research, audio/video overviews, and deep integrations."
+        },
+        "mcp": {
+          "agent": "none",
+          "correct": false,
+          "corrected": "native MCP server provided",
+          "note": "The project is explicitly a Model Context Protocol (MCP) server (`notebooklm-mcp` / `notebooklm-mcp-cli`) designed to integrate with AI agents."
+        },
+        "main_blocker": {
+          "agent": "Requires enterprise Google Cloud setup and licensing rather than self-serve consumer API keys.",
+          "correct": false,
+          "corrected": "Requires active browser login session / cookie extraction rather than a formal public API.",
+          "note": "There is no enterprise Google Cloud setup requirement; the main blocker/mechanism is extracting session cookies from a managed browser via `nlm login`."
+        }
+      },
+      "correct": 1,
+      "total": 7,
+      "accuracy": 0.143
+    },
+    {
+      "id": 2,
+      "app": "HubSpot",
+      "fields": {
+        "category": {
+          "agent": "CRM and Sales",
+          "correct": true,
+          "corrected": "CRM and Sales",
+          "note": "The category accurately reflects HubSpot's core product offerings."
+        },
+        "auth_methods": {
+          "agent": [
+            "OAuth2",
+            "Bearer token",
+            "API key"
+          ],
+          "correct": true,
+          "corrected": [
+            "OAuth2",
+            "Bearer token",
+            "API key"
+          ],
+          "note": "Supported by general HubSpot knowledge and the search findings mentioning OAuth 2.1 with PKCE for the remote MCP server."
+        },
+        "access": {
+          "agent": "self-serve",
+          "correct": true,
+          "corrected": "self-serve",
+          "note": "HubSpot accounts and developer tools can be set up via self-serve onboarding."
+        },
+        "api_types": {
+          "agent": [
+            "REST",
+            "webhook",
+            "SDK"
+          ],
+          "correct": true,
+          "corrected": [
+            "REST",
+            "webhook",
+            "SDK"
+          ],
+          "note": "Standard set of API types for HubSpot's comprehensive developer platform."
+        },
+        "api_breadth": {
+          "agent": "broad",
+          "correct": true,
+          "corrected": "broad",
+          "note": "HubSpot provides an extensive and broad API covering CRM, CMS, marketing, sales, and service hubs."
+        },
+        "mcp": {
+          "agent": "none",
+          "correct": false,
+          "corrected": "native",
+          "note": "The evidence explicitly confirms that HubSpot offers two distinct Model Context Protocol (MCP) servers: a remote HubSpot MCP server and a local Developer MCP server."
+        },
+        "main_blocker": {
+          "agent": "",
+          "correct": true,
+          "corrected": "",
+          "note": "No specific blocker identified in the context."
+        }
+      },
+      "correct": 6,
+      "total": 7,
+      "accuracy": 0.857
+    },
+    {
+      "id": 3,
+      "app": "Pipedrive",
+      "fields": {
+        "category": {
+          "agent": "CRM and Sales",
+          "correct": true,
+          "corrected": "CRM and Sales",
+          "note": "The application is Pipedrive, a recognized CRM and sales tool."
+        },
+        "auth_methods": {
+          "agent": [
+            "API key",
+            "OAuth2",
+            "Bearer token"
+          ],
+          "correct": false,
+          "corrected": [
+            "API key",
+            "OAuth2"
+          ],
+          "note": "Evidence mentions API token (passed via x-api-token header) and OAuth 2.0. 'Bearer token' is not explicitly listed as a standalone distinct method in the documentation provided."
+        },
+        "access": {
+          "agent": "self-serve",
+          "correct": true,
+          "corrected": "self-serve",
+          "note": "Users can sign up freely and obtain API tokens or set up integrations via self-serve."
+        },
+        "api_types": {
+          "agent": [
+            "REST",
+            "webhook"
+          ],
+          "correct": true,
+          "corrected": [
+            "REST",
+            "webhook"
+          ],
+          "note": "REST API and webhooks are standard for Pipedrive's integrations."
+        },
+        "api_breadth": {
+          "agent": "broad",
+          "correct": true,
+          "corrected": "broad",
+          "note": "Pipedrive provides comprehensive CRM APIs covering deals, contacts, organizations, leads, etc."
+        },
+        "mcp": {
+          "agent": "none",
+          "correct": false,
+          "corrected": "native",
+          "note": "Pipedrive provides an official, native MCP server for connecting AI assistants like ChatGPT and Claude via OAuth."
+        },
+        "main_blocker": {
+          "agent": "",
+          "correct": true,
+          "corrected": "",
+          "note": "No significant blocker found for accessing the API or MCP."
+        }
+      },
+      "correct": 5,
+      "total": 7,
+      "accuracy": 0.714
+    },
+    {
+      "id": 4,
+      "app": "Attio",
+      "fields": {
+        "category": {
+          "agent": "CRM and Sales",
+          "correct": true,
+          "corrected": "CRM and Sales",
+          "note": "The evidence explicitly mentions interacting with the Attio CRM workspace."
+        },
+        "auth_methods": {
+          "agent": [
+            "OAuth2",
+            "API key",
+            "Bearer token"
+          ],
+          "correct": true,
+          "corrected": [
+            "OAuth2",
+            "API key",
+            "Bearer token"
+          ],
+          "note": "Supported by the evidence stating that the API uses Bearer token authentication via either an API Key or an OAuth Access Token, and OAuth flows."
+        },
+        "access": {
+          "agent": "self-serve",
+          "correct": true,
+          "corrected": "self-serve",
+          "note": "The evidence shows self-serve connection via custom MCP connector and standard OAuth flows."
+        },
+        "api_types": {
+          "agent": [
+            "REST"
+          ],
+          "correct": true,
+          "corrected": [
+            "REST"
+          ],
+          "note": "Standard web API at https://api.attio.com/v2/ implies REST."
+        },
+        "api_breadth": {
+          "agent": "moderate",
+          "correct": true,
+          "corrected": "moderate",
+          "note": "Moderate breadth is appropriate for standard CRM API functionality."
+        },
+        "mcp": {
+          "agent": "none",
+          "correct": false,
+          "corrected": "native",
+          "note": "The evidence explicitly states that Attio provides an official hosted Model Context Protocol (MCP) server at https://mcp.attio.com/mcp."
+        },
+        "main_blocker": {
+          "agent": "",
+          "correct": true,
+          "corrected": "",
+          "note": "No blockers found in the evidence."
+        }
+      },
+      "correct": 6,
+      "total": 7,
+      "accuracy": 0.857
+    },
+    {
+      "id": 5,
+      "app": "Twenty",
+      "fields": {
+        "category": {
+          "agent": "CRM and Sales",
+          "correct": true,
+          "corrected": "CRM and Sales",
+          "note": "The app is Twenty, an open-source CRM."
+        },
+        "auth_methods": {
+          "agent": [
+            "Bearer token",
+            "OAuth2"
+          ],
+          "correct": true,
+          "corrected": [
+            "Bearer token",
+            "OAuth2"
+          ],
+          "note": "Supported by API Key (Bearer token) and OAuth 2.0 implementations found in the documentation."
+        },
+        "access": {
+          "agent": "self-serve",
+          "correct": true,
+          "corrected": "self-serve",
+          "note": "Available as cloud or self-hosted with open source code and self-serve options."
+        },
+        "api_types": {
+          "agent": [
+            "REST",
+            "GraphQL",
+            "webhook"
+          ],
+          "correct": true,
+          "corrected": [
+            "REST",
+            "GraphQL",
+            "webhook"
+          ],
+          "note": "Documentation confirms REST and GraphQL APIs, as well as Webhooks (Settings -> API & Webhooks)."
+        },
+        "api_breadth": {
+          "agent": "broad",
+          "correct": true,
+          "corrected": "broad",
+          "note": "Comprehensive Core API (CRUD on records) and Metadata API (schema management)."
+        },
+        "mcp": {
+          "agent": "none",
+          "correct": false,
+          "corrected": "native",
+          "note": "Fresh search results confirm Twenty provides an official Model Context Protocol (MCP) server for AI agents."
+        },
+        "main_blocker": {
+          "agent": "",
+          "correct": true,
+          "corrected": "",
+          "note": "No main blocker identified."
+        }
+      },
+      "correct": 6,
+      "total": 7,
+      "accuracy": 0.857
+    },
+    {
+      "id": 6,
+      "app": "Podio",
+      "fields": {
+        "category": {
+          "agent": "CRM and Sales",
+          "correct": true,
+          "corrected": "CRM and Sales",
+          "note": "Podio is a work management and CRM platform."
+        },
+        "auth_methods": {
+          "agent": [
+            "OAuth2"
+          ],
+          "correct": true,
+          "corrected": [
+            "OAuth2"
+          ],
+          "note": "Supported by official documentation specifying OAuth2 authentication flows."
+        },
+        "access": {
+          "agent": "self-serve",
+          "correct": true,
+          "corrected": "self-serve",
+          "note": "Applications can be registered self-serve through account settings."
+        },
+        "api_types": {
+          "agent": [
+            "REST",
+            "SDK"
+          ],
+          "correct": true,
+          "corrected": [
+            "REST",
+            "SDK"
+          ],
+          "note": "Supported by the REST API documentation and client libraries/SDK references."
+        },
+        "api_breadth": {
+          "agent": "moderate",
+          "correct": true,
+          "corrected": "moderate",
+          "note": "Covers authentication, apps, items, comments, and filters."
+        },
+        "mcp": {
+          "agent": "none",
+          "correct": false,
+          "corrected": "available",
+          "note": "The evidence explicitly provides details for the Podio External MCP Server at https://mcp.podio.com."
+        },
+        "main_blocker": {
+          "agent": "",
+          "correct": true,
+          "corrected": "",
+          "note": "No main blockers found in the extraction or evidence."
+        }
+      },
+      "correct": 6,
+      "total": 7,
+      "accuracy": 0.857
+    },
+    {
+      "id": 7,
+      "app": "Zoho CRM",
+      "fields": {
+        "category": {
+          "agent": "CRM and Sales",
+          "correct": true,
+          "corrected": "CRM and Sales",
+          "note": "The app is Zoho CRM, which clearly falls under CRM and Sales."
+        },
+        "auth_methods": {
+          "agent": [
+            "OAuth2"
+          ],
+          "correct": true,
+          "corrected": [
+            "OAuth2"
+          ],
+          "note": "Authentication uses OAuth2 for both MCP (browser login flow) and direct REST API access."
+        },
+        "access": {
+          "agent": "self-serve",
+          "correct": true,
+          "corrected": "self-serve",
+          "note": "Accounts and API access can be signed up for and configured self-serve."
+        },
+        "api_types": {
+          "agent": [
+            "REST",
+            "SDK"
+          ],
+          "correct": true,
+          "corrected": [
+            "REST",
+            "SDK"
+          ],
+          "note": "Evidence mentions REST APIs and server SDKs (Node.js, Java, etc.)."
+        },
+        "api_breadth": {
+          "agent": "broad",
+          "correct": true,
+          "corrected": "broad",
+          "note": "The REST API and MCP servers cover comprehensive data operations, module customization, and workflow automation."
+        },
+        "mcp": {
+          "agent": "none",
+          "correct": false,
+          "corrected": "native",
+          "note": "Zoho CRM provides pre-built MCP servers for connecting AI tools via Model Context Protocol, so mcp should be native."
+        },
+        "main_blocker": {
+          "agent": "",
+          "correct": true,
+          "corrected": "",
+          "note": "No significant blockers identified for getting started with the APIs or MCP servers."
+        }
+      },
+      "correct": 6,
+      "total": 7,
+      "accuracy": 0.857
+    },
+    {
+      "id": 8,
+      "app": "Close",
+      "fields": {
+        "category": {
+          "agent": "CRM and Sales",
+          "correct": true,
+          "corrected": "CRM and Sales",
+          "note": "The app is Close, which is a CRM platform."
+        },
+        "auth_methods": {
+          "agent": [
+            "API key",
+            "OAuth2",
+            "Basic"
+          ],
+          "correct": false,
+          "corrected": [
+            "API key",
+            "OAuth2"
+          ],
+          "note": "Evidence mentions OAuth 2.0 and API key (using Close-API-Key and Close-Scope headers), but does not mention Basic authentication."
+        },
+        "access": {
+          "agent": "self-serve",
+          "correct": true,
+          "corrected": "self-serve",
+          "note": "Documentation indicates self-serve setup for OAuth and API keys across various clients."
+        },
+        "api_types": {
+          "agent": [
+            "REST",
+            "webhook"
+          ],
+          "correct": true,
+          "corrected": [
+            "REST",
+            "webhook"
+          ],
+          "note": "Standard industry categorization for Close API types aligns with REST and webhook."
+        },
+        "api_breadth": {
+          "agent": "broad",
+          "correct": true,
+          "corrected": "broad",
+          "note": "Supports full read/write/destructive scopes and comprehensive CRM functionality."
+        },
+        "mcp": {
+          "agent": "official",
+          "correct": true,
+          "corrected": "official",
+          "note": "Evidence confirms it is an official Close MCP server (https://mcp.close.com/mcp)."
+        },
+        "main_blocker": {
+          "agent": "",
+          "correct": true,
+          "corrected": "",
+          "note": "No significant blockers identified in the evidence."
+        }
+      },
+      "correct": 6,
+      "total": 7,
+      "accuracy": 0.857
+    },
+    {
+      "id": 9,
+      "app": "Copper",
+      "fields": {
+        "category": {
+          "agent": "CRM and Sales",
+          "correct": true,
+          "corrected": "CRM and Sales",
+          "note": "Copper is a well-known CRM platform for G Suite."
+        },
+        "auth_methods": {
+          "agent": [
+            "API key",
+            "OAuth2",
+            "Bearer token"
+          ],
+          "correct": false,
+          "corrected": [
+            "API key",
+            "OAuth 2.0"
+          ],
+          "note": "Evidence specifically states support for API keys and OAuth 2.0 using headers like X-PW-AccessToken, X-PW-Application, and X-PW-UserEmail. Bearer token is not explicitly mentioned."
+        },
+        "access": {
+          "agent": "self-serve",
+          "correct": true,
+          "corrected": "self-serve",
+          "note": "The evidence shows standard developer documentation and self-serve API access."
+        },
+        "api_types": {
+          "agent": [
+            "REST",
+            "webhook"
+          ],
+          "correct": true,
+          "corrected": [
+            "REST",
+            "webhook"
+          ],
+          "note": "REST endpoints and developer APIs are present in the documentation."
+        },
+        "api_breadth": {
+          "agent": "moderate",
+          "correct": true,
+          "corrected": "moderate",
+          "note": "Standard breadth for a CRM developer API."
+        },
+        "mcp": {
+          "agent": "none",
+          "correct": false,
+          "corrected": "undocumented Model Context Protocol (MCP) server",
+          "note": "Evidence explicitly mentions a separate, undocumented Model Context Protocol (MCP) server at mcp.getcopper.com for documentation access."
+        },
+        "main_blocker": {
+          "agent": "",
+          "correct": true,
+          "corrected": "",
+          "note": "No specific main blocker is evidenced."
+        }
+      },
+      "correct": 5,
+      "total": 7,
+      "accuracy": 0.714
+    },
+    {
+      "id": 10,
+      "app": "DealCloud",
+      "fields": {
+        "category": {
+          "agent": "CRM and Sales",
+          "correct": true,
+          "corrected": "CRM and Sales",
+          "note": "The category correctly reflects DealCloud's positioning as a deal management and CRM platform for financial services and professional services."
+        },
+        "auth_methods": {
+          "agent": [
+            "OAuth2"
+          ],
+          "correct": true,
+          "corrected": [
+            "OAuth2"
+          ],
+          "note": "The documentation explicitly states that DealCloud MCP uses OAuth 2.0 for authentication."
+        },
+        "access": {
+          "agent": "contact-sales",
+          "correct": true,
+          "corrected": "contact-sales",
+          "note": "DealCloud is an enterprise platform requiring going through sales/account management for custom clients or setup."
+        },
+        "api_types": {
+          "agent": [
+            "REST",
+            "SDK"
+          ],
+          "correct": true,
+          "corrected": [
+            "REST",
+            "SDK"
+          ],
+          "note": "Consistent with standard enterprise CRM capabilities and DealCloud API docs context."
+        },
+        "api_breadth": {
+          "agent": "moderate",
+          "correct": true,
+          "corrected": "moderate",
+          "note": "Reflects a targeted API breadth specialized for deal management data."
+        },
+        "mcp": {
+          "agent": "none",
+          "correct": false,
+          "corrected": "native",
+          "note": "The fresh evidence and documentation explicitly detail a dedicated Model Context Protocol (MCP) server implementation for DealCloud with specific support for clients like Claude, ChatGPT, Microsoft Copilot Studio, and Cursor."
+        },
+        "main_blocker": {
+          "agent": "Requires enterprise DealCloud subscription credentials (site URL, client ID, client secret) with no self-serve free developer sandbox signup.",
+          "correct": true,
+          "corrected": "Requires enterprise DealCloud subscription credentials (site URL, client ID, client secret) with no self-serve free developer sandbox signup.",
+          "note": "Accurately represents enterprise requirements for accessing DealCloud services and API/MCP connections."
+        }
+      },
+      "correct": 6,
+      "total": 7,
+      "accuracy": 0.857
+    },
+    {
+      "id": 12,
+      "app": "Intercom",
+      "fields": {
+        "category": {
+          "agent": "Support and Helpdesk",
+          "correct": true,
+          "corrected": "Support and Helpdesk",
+          "note": "Intercom is a well-known customer service and support platform."
+        },
+        "auth_methods": {
+          "agent": [
+            "OAuth2",
+            "Bearer token"
+          ],
+          "correct": true,
+          "corrected": [
+            "OAuth2",
+            "Bearer token"
+          ],
+          "note": "The evidence explicitly confirms OAuth Flow and Bearer Token as authentication methods."
+        },
+        "access": {
+          "agent": "self-serve",
+          "correct": true,
+          "corrected": "self-serve",
+          "note": "Standard developer documentation allows self-serve access to set up integrations and MCP servers."
+        },
+        "api_types": {
+          "agent": [
+            "REST",
+            "SDK"
+          ],
+          "correct": true,
+          "corrected": [
+            "REST",
+            "SDK"
+          ],
+          "note": "Supported by the standard Intercom developer documentation references for REST API and SDKs."
+        },
+        "api_breadth": {
+          "agent": "broad",
+          "correct": true,
+          "corrected": "broad",
+          "note": "Intercom provides a comprehensive API covering users, companies, conversations, and Help Center articles."
+        },
+        "mcp": {
+          "agent": "none",
+          "correct": false,
+          "corrected": "native",
+          "note": "The evidence explicitly states that Intercom provides an official Model Context Protocol (MCP) server at https://mcp.intercom.com/mcp."
+        },
+        "main_blocker": {
+          "agent": "",
+          "correct": true,
+          "corrected": "",
+          "note": "No main blocker identified from the fresh web evidence."
+        }
+      },
+      "correct": 6,
+      "total": 7,
+      "accuracy": 0.857
+    },
+    {
+      "id": 13,
+      "app": "Freshdesk",
+      "fields": {
+        "category": {
+          "agent": "Support and Helpdesk",
+          "correct": true,
+          "corrected": "Support and Helpdesk",
+          "note": "The category accurately reflects Freshdesk's role as a support and helpdesk software."
+        },
+        "auth_methods": {
+          "agent": [
+            "Basic",
+            "API key"
+          ],
+          "correct": false,
+          "corrected": [
+            "API key"
+          ],
+          "note": "The fresh evidence states that Freshworks MCP for Freshdesk currently supports API key authentication only and explicitly notes that OAuth is not supported; Basic auth is not mentioned."
+        },
+        "access": {
+          "agent": "self-serve",
+          "correct": true,
+          "corrected": "self-serve",
+          "note": "Supported as a standard cloud software offering with self-serve signup/account capabilities."
+        },
+        "api_types": {
+          "agent": [
+            "REST",
+            "SDK",
+            "webhook"
+          ],
+          "correct": true,
+          "corrected": [
+            "REST",
+            "SDK",
+            "webhook"
+          ],
+          "note": "Standard Freshdesk developer APIs include REST, SDKs, and webhooks."
+        },
+        "api_breadth": {
+          "agent": "broad",
+          "correct": true,
+          "corrected": "broad",
+          "note": "Freshdesk provides a comprehensive public API covering tickets, contacts, companies, etc."
+        },
+        "mcp": {
+          "agent": "none",
+          "correct": false,
+          "corrected": "native",
+          "note": "The evidence explicitly describes an official Freshworks Model Context Protocol (MCP) server integration for Freshdesk, so 'none' is incorrect."
+        },
+        "main_blocker": {
+          "agent": "",
+          "correct": true,
+          "corrected": "",
+          "note": "No main blocker identified from the text."
+        }
+      },
+      "correct": 5,
+      "total": 7,
+      "accuracy": 0.714
+    },
+    {
+      "id": 14,
+      "app": "Front",
+      "fields": {
+        "category": {
+          "agent": "Support and Helpdesk",
+          "correct": true,
+          "corrected": "Support and Helpdesk",
+          "note": "Front is a customer operations and support platform handling email, SMS, chat, etc."
+        },
+        "auth_methods": {
+          "agent": [
+            "Bearer token",
+            "OAuth2"
+          ],
+          "correct": true,
+          "corrected": [
+            "Bearer token",
+            "OAuth2"
+          ],
+          "note": "Evidence mentions OAuth 2.1 with PKCE compatibility for the MCP server."
+        },
+        "access": {
+          "agent": "self-serve",
+          "correct": true,
+          "corrected": "self-serve",
+          "note": "Users can create developer apps and connect via open beta without explicit sales gating."
+        },
+        "api_types": {
+          "agent": [
+            "REST",
+            "webhook"
+          ],
+          "correct": true,
+          "corrected": [
+            "REST",
+            "webhook"
+          ],
+          "note": "Standard industry categorization for Front APIs based on general knowledge and evidence."
+        },
+        "api_breadth": {
+          "agent": "broad",
+          "correct": true,
+          "corrected": "broad",
+          "note": "Front offers comprehensive API endpoints, webhooks, and an MCP server covering conversations, comments, tags, etc."
+        },
+        "mcp": {
+          "agent": "official",
+          "correct": true,
+          "corrected": "official",
+          "note": "Front provides an official hosted Model Context Protocol (MCP) server at https://mcp.frontapp.com/mcp."
+        },
+        "main_blocker": {
+          "agent": "",
+          "correct": true,
+          "corrected": "",
+          "note": "No significant blocker found; MCP is in open beta and accessible."
+        }
+      },
+      "correct": 7,
+      "total": 7,
+      "accuracy": 1.0
+    },
+    {
+      "id": 15,
+      "app": "Pylon",
+      "fields": {
+        "category": {
+          "agent": "Support and Helpdesk",
+          "correct": true,
+          "corrected": "Support and Helpdesk",
+          "note": "The category correctly reflects Pylon's nature as an AI-powered B2B customer support and ticketing platform."
+        },
+        "auth_methods": {
+          "agent": [
+            "Bearer token"
+          ],
+          "correct": false,
+          "corrected": [
+            "Bearer token",
+            "OAuth 2.0"
+          ],
+          "note": "The evidence explicitly states that the Pylon REST API uses Bearer authentication with an API token, and the Pylon MCP server uses OAuth 2.0 (AuthKit)."
+        },
+        "access": {
+          "agent": "unclear",
+          "correct": false,
+          "corrected": "self-serve",
+          "note": "Tokens and MCP server integration can be managed directly by users in the Pylon dashboard under settings."
+        },
+        "api_types": {
+          "agent": [
+            "REST"
+          ],
+          "correct": true,
+          "corrected": [
+            "REST"
+          ],
+          "note": "The evidence mentions the standard Pylon REST API and also provides an MCP server interface."
+        },
+        "api_breadth": {
+          "agent": "moderate",
+          "correct": true,
+          "corrected": "moderate",
+          "note": "The API covers issues, accounts, contacts, users, and tasks/projects."
+        },
+        "main_blocker": {
+          "agent": "API tokens are generated via the Pylon dashboard, but the exact self-serve versus paid-plan requirements are unstated in the provided text.",
+          "correct": true,
+          "corrected": "API tokens are generated via the Pylon dashboard, but the exact self-serve versus paid-plan requirements are unstated in the provided text.",
+          "note": "Accurately captures the details and limitations found in the source text regarding access and token generation."
+        }
+      },
+      "correct": 4,
+      "total": 6,
+      "accuracy": 0.667
+    },
+    {
+      "id": 16,
+      "app": "LiveAgent",
+      "fields": {
+        "category": {
+          "agent": "Support and Helpdesk",
+          "correct": true,
+          "corrected": "Support and Helpdesk",
+          "note": "LiveAgent is help desk software and live chat, matching the category."
+        },
+        "auth_methods": {
+          "agent": [
+            "API key"
+          ],
+          "correct": false,
+          "corrected": [
+            "Bearer token",
+            "OAuth 2.1"
+          ],
+          "note": "The evidence specifies that MCP client authentication uses either a Bearer token or OAuth 2.1."
+        },
+        "access": {
+          "agent": "self-serve",
+          "correct": true,
+          "corrected": "self-serve",
+          "note": "Users can generate tokens directly in their LiveAgent profile or use a standard self-serve OAuth flow."
+        },
+        "api_types": {
+          "agent": [
+            "REST",
+            "SDK"
+          ],
+          "correct": false,
+          "corrected": [
+            "MCP"
+          ],
+          "note": "The evidence focuses on LiveAgent's built-in Model Context Protocol (MCP) server providing 33 tools."
+        },
+        "api_breadth": {
+          "agent": "broad",
+          "correct": true,
+          "corrected": "broad",
+          "note": "Provides 33 tools covering tickets, custom fields, AI-generated content, knowledge base, and team lookups."
+        },
+        "mcp": {
+          "agent": "none",
+          "correct": false,
+          "corrected": "native",
+          "note": "The application provides a built-in Model Context Protocol (MCP) server natively."
+        },
+        "main_blocker": {
+          "agent": "",
+          "correct": true,
+          "corrected": "",
+          "note": "No blockers identified in the evidence."
+        }
+      },
+      "correct": 4,
+      "total": 7,
+      "accuracy": 0.571
+    },
+    {
+      "id": 17,
+      "app": "Plain",
+      "fields": {
+        "category": {
+          "agent": "Support and Helpdesk",
+          "correct": true,
+          "corrected": "Support and Helpdesk",
+          "note": "The evidence confirms Plain is a support platform (support data, support help center)."
+        },
+        "auth_methods": {
+          "agent": [
+            "Bearer token",
+            "OAuth2"
+          ],
+          "correct": true,
+          "corrected": [
+            "Bearer token",
+            "OAuth2"
+          ],
+          "note": "The evidence shows OAuth is used for the Plain MCP server and Bearer token (Machine User API key) for the GraphQL API."
+        },
+        "access": {
+          "agent": "self-serve",
+          "correct": true,
+          "corrected": "self-serve",
+          "note": "Standard software-as-a-service access model supported by available documentation and user account connection."
+        },
+        "api_types": {
+          "agent": [
+            "GraphQL",
+            "webhook",
+            "SDK"
+          ],
+          "correct": true,
+          "corrected": [
+            "GraphQL",
+            "webhook",
+            "SDK"
+          ],
+          "note": "Evidence specifically mentions Plain's GraphQL API and Machine User API keys."
+        },
+        "api_breadth": {
+          "agent": "broad",
+          "correct": true,
+          "corrected": "broad",
+          "note": "Covers core platform functionality via GraphQL API."
+        },
+        "mcp": {
+          "agent": "none",
+          "correct": false,
+          "corrected": "native",
+          "note": "The extracted value 'none' is incorrect because the evidence explicitly refers to 'The Plain MCP server at https://mcp.plain.com/mcp' and 'Plain's MCP Server'."
+        },
+        "main_blocker": {
+          "agent": "",
+          "correct": true,
+          "corrected": "",
+          "note": "No specific blocker identified preventing standard integration."
+        }
+      },
+      "correct": 6,
+      "total": 7,
+      "accuracy": 0.857
+    },
+    {
+      "id": 18,
+      "app": "Help Scout",
+      "fields": {
+        "category": {
+          "agent": "Support and Helpdesk",
+          "correct": true,
+          "corrected": "Support and Helpdesk",
+          "note": "Help Scout is a customer support and helpdesk platform."
+        },
+        "auth_methods": {
+          "agent": [
+            "OAuth2",
+            "Basic"
+          ],
+          "correct": false,
+          "corrected": [
+            "OAuth2"
+          ],
+          "note": "Help Scout uses OAuth 2.0 (Authorization Code and Client Credentials flows) for API authentication, not Basic auth."
+        },
+        "access": {
+          "agent": "self-serve",
+          "correct": true,
+          "corrected": "self-serve",
+          "note": "Accounts and API applications can be created self-serve via the developer portal."
+        },
+        "api_types": {
+          "agent": [
+            "REST",
+            "SDK"
+          ],
+          "correct": true,
+          "corrected": [
+            "REST",
+            "SDK"
+          ],
+          "note": "REST API and community/official SDKs exist."
+        },
+        "api_breadth": {
+          "agent": "broad",
+          "correct": true,
+          "corrected": "broad",
+          "note": "The Mailbox API covers mailboxes, conversations, users, custom fields, tags, etc."
+        },
+        "mcp": {
+          "agent": "none",
+          "correct": false,
+          "corrected": "native",
+          "note": "Evidence shows Help Scout has an official/native MCP server (help-scout-mcp-server)."
+        },
+        "main_blocker": {
+          "agent": "",
+          "correct": true,
+          "corrected": "",
+          "note": "No significant technical blocker identified."
+        }
+      },
+      "correct": 5,
+      "total": 7,
+      "accuracy": 0.714
+    },
+    {
+      "id": 19,
+      "app": "Gorgias",
+      "fields": {
+        "category": {
+          "agent": "Support and Helpdesk",
+          "correct": true,
+          "corrected": "Support and Helpdesk",
+          "note": "Gorgias is widely known as a customer service and helpdesk platform for e-commerce."
+        },
+        "auth_methods": {
+          "agent": [
+            "API key",
+            "OAuth2",
+            "Basic",
+            "Bearer token"
+          ],
+          "correct": true,
+          "corrected": [
+            "API key",
+            "OAuth2",
+            "Basic",
+            "Bearer token"
+          ],
+          "note": "Evidence confirms the Gorgias API supports API keys via HTTP Basic Authentication for private apps and OAuth2 Bearer tokens for public apps."
+        },
+        "access": {
+          "agent": "paid-plan",
+          "correct": true,
+          "corrected": "paid-plan",
+          "note": "Gorgias requires a subscription/paid plan to access features and generate API keys."
+        },
+        "api_types": {
+          "agent": [
+            "REST"
+          ],
+          "correct": true,
+          "corrected": [
+            "REST"
+          ],
+          "note": "Evidence explicitly states that the Gorgias API is structured with REST in mind."
+        },
+        "api_breadth": {
+          "agent": "moderate",
+          "correct": true,
+          "corrected": "moderate",
+          "note": "The API handles standard helpdesk integrations, accounts, and integrations, fitting a moderate breadth."
+        },
+        "mcp": {
+          "agent": "none",
+          "correct": false,
+          "corrected": "https://mcp.gorgias.com/mcp",
+          "note": "The evidence explicitly provides an MCP server URL ('https://mcp.gorgias.com/mcp') for connecting AI assistants, so it is not 'none'."
+        },
+        "main_blocker": {
+          "agent": "Requires a Gorgias subscription; API keys and credentials are generated from within a Gorgias account interface.",
+          "correct": true,
+          "corrected": "Requires a Gorgias subscription; API keys and credentials are generated from within a Gorgias account interface.",
+          "note": "Accurately reflects subscription prerequisites and credential requirements."
+        }
+      },
+      "correct": 6,
+      "total": 7,
+      "accuracy": 0.857
+    },
+    {
+      "id": 20,
+      "app": "Gladly",
+      "fields": {
+        "category": {
+          "agent": "Support and Helpdesk",
+          "correct": true,
+          "corrected": "Support and Helpdesk",
+          "note": "The evidence shows Gladly is a customer service and customer relationship platform (customer service, agents, conversations, customer profiles)."
+        },
+        "auth_methods": {
+          "agent": [
+            "Basic"
+          ],
+          "correct": true,
+          "corrected": [
+            "Basic"
+          ],
+          "note": "The documentation explicitly states 'Gladly API uses token-based Basic Authentication' where the username is the agent email and password is the API token."
+        },
+        "access": {
+          "agent": "unclear",
+          "correct": false,
+          "corrected": "paid",
+          "note": "Gladly is a commercial customer service software requiring a paid account and subscription to access an organization instance and its APIs."
+        },
+        "api_types": {
+          "agent": [
+            "REST",
+            "webhook"
+          ],
+          "correct": true,
+          "corrected": [
+            "REST",
+            "webhook"
+          ],
+          "note": "The documentation covers the REST API, Lookup API, and creating webhooks."
+        },
+        "api_breadth": {
+          "agent": "moderate",
+          "correct": true,
+          "corrected": "moderate",
+          "note": "The API supports managing customer profile data, interacting with timelines, orders, and agents, representing a moderate breadth of functionality."
+        },
+        "mcp": {
+          "agent": "none",
+          "correct": false,
+          "corrected": "community",
+          "note": "The evidence mentions a managed Gladly MCP server provided by StackOne for AI agents, indicating a community or third-party ecosystem integration rather than a native first-party MCP implementation."
+        },
+        "main_blocker": {
+          "agent": "Requires a Gladly administrator to enable API permissions and generate an API token for a user account within an existing organization instance.",
+          "correct": true,
+          "corrected": "Requires a Gladly administrator to enable API permissions and generate an API token for a user account within an existing organization instance.",
+          "note": "Accurately reflects the requirement to log in as an administrator, assign the API User permission, and generate a token."
+        }
+      },
+      "correct": 5,
+      "total": 7,
+      "accuracy": 0.714
+    },
+    {
+      "id": 22,
+      "app": "Twilio",
+      "fields": {
+        "category": {
+          "agent": "Communications and Messaging",
+          "correct": true,
+          "corrected": "Communications and Messaging",
+          "note": "The category correctly reflects Twilio's core offerings."
+        },
+        "auth_methods": {
+          "agent": [
+            "Basic"
+          ],
+          "correct": false,
+          "corrected": [
+            "Account SID",
+            "API Key",
+            "API Secret",
+            "None"
+          ],
+          "note": "Twilio typically uses Account SID and Auth Token / API Keys for its APIs, and the documentation-focused MCP server requires no authentication."
+        },
+        "access": {
+          "agent": "self-serve",
+          "correct": true,
+          "corrected": "self-serve",
+          "note": "Twilio provides self-serve account creation and access."
+        },
+        "api_types": {
+          "agent": [
+            "REST"
+          ],
+          "correct": true,
+          "corrected": [
+            "REST"
+          ],
+          "note": "Twilio primarily exposes REST APIs."
+        },
+        "api_breadth": {
+          "agent": "broad",
+          "correct": true,
+          "corrected": "broad",
+          "note": "Twilio has a very broad API surface covering over 1,800 endpoints across 30+ products."
+        },
+        "mcp": {
+          "agent": "none",
+          "correct": false,
+          "corrected": "native",
+          "note": "Twilio provides an official, hosted Model Context Protocol (MCP) server at https://mcp.twilio.com/docs."
+        },
+        "main_blocker": {
+          "agent": "",
+          "correct": true,
+          "corrected": "",
+          "note": "No main blocker identified from the evidence."
+        }
+      },
+      "correct": 5,
+      "total": 7,
+      "accuracy": 0.714
+    },
+    {
+      "id": 23,
+      "app": "Zoho Cliq",
+      "fields": {
+        "category": {
+          "agent": "Communications and Messaging",
+          "correct": true,
+          "corrected": "Communications and Messaging",
+          "note": "The category correctly reflects Zoho Cliq's role as a chat, messaging, and collaboration platform."
+        },
+        "auth_methods": {
+          "agent": [
+            "OAuth2"
+          ],
+          "correct": true,
+          "corrected": [
+            "OAuth2"
+          ],
+          "note": "Evidence confirms that Zoho Cliq APIs use OAuth 2.0 for authentication."
+        },
+        "access": {
+          "agent": "self-serve",
+          "correct": true,
+          "corrected": "self-serve",
+          "note": "Developers can register applications themselves via the Zoho API Console to obtain credentials."
+        },
+        "api_types": {
+          "agent": [
+            "REST",
+            "webhook"
+          ],
+          "correct": true,
+          "corrected": [
+            "REST",
+            "webhook"
+          ],
+          "note": "Evidence explicitly documents a comprehensive REST API (v3) along with platform components like bots, webhooks, and schedulers."
+        },
+        "api_breadth": {
+          "agent": "broad",
+          "correct": true,
+          "corrected": "broad",
+          "note": "The API covers deep CRUD operations for chats, messages, bots, slash commands, widgets, and user preferences across multiple versions."
+        },
+        "mcp": {
+          "agent": "none",
+          "correct": false,
+          "corrected": "native",
+          "note": "Fresh evidence explicitly shows Zoho Cliq features a native MCP server configuration and integration through mcp.zoho.com and the Cliq interface."
+        },
+        "main_blocker": {
+          "agent": "",
+          "correct": true,
+          "corrected": "",
+          "note": "No significant blocker exists for accessing public APIs via self-serve OAuth registration."
+        }
+      },
+      "correct": 6,
+      "total": 7,
+      "accuracy": 0.857
+    }
+  ],
+  "summary": {
+    "apps": 30,
+    "fields": 209,
+    "correct": 153,
+    "accuracy": 0.732
+  }
+}

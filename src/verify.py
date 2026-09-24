@@ -8,9 +8,9 @@ Two loops:
      agent-corrected pass against it.
 
 Usage:
-  python src/verify.py            # self-check 10 apps + emit checklist
-  python src/verify.py --n 20
-  python src/verify.py --all
+  python src/verify.py                  # self-check 10 apps (one per category) + emit checklist
+  python src/verify.py --all            # audit every app in raw_results.json
+  python src/verify.py --all --force    # re-audit apps already in the report
 """
 
 from __future__ import annotations
@@ -86,13 +86,21 @@ def sample(raw: dict, n: int | None) -> list[dict]:
     rows = [raw[k] for k in sorted(raw, key=lambda x: int(x))]
     if n is None:
         return rows
-    seen: set[str] = set()
     picked: list[dict] = []
+    seen: set[str] = set()
+    # First pass: one app per category (spread across the dataset).
     for row in rows:
         cat = row.get("category_graph", row.get("category", ""))
         if cat not in seen:
             seen.add(cat)
             picked.append(row)
+        if len(picked) >= n:
+            return picked
+    # Second pass: fill up to n with the remaining apps.
+    for row in rows:
+        if row in picked:
+            continue
+        picked.append(row)
         if len(picked) >= n:
             break
     return picked
@@ -128,6 +136,7 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--n", type=int, default=10)
     ap.add_argument("--all", action="store_true")
+    ap.add_argument("--force", action="store_true", help="re-audit apps already in the report")
     args = ap.parse_args()
 
     if not RAW_PATH.exists():
@@ -138,9 +147,33 @@ def main() -> None:
     researcher = Researcher()
     researcher.discover()
 
-    report = {"apps": [], "summary": {}}
-    correct = total = 0
+    report: dict = {"apps": [], "summary": {}}
+    done: dict[str, dict] = {}
+    if AGENT_PATH.exists() and not args.force:
+        try:
+            prev = json.loads(AGENT_PATH.read_text(encoding="utf-8-sig"))
+            done = {str(a["id"]): a for a in prev.get("apps", [])}
+        except Exception:  # noqa: BLE001
+            done = {}
+
+    def write_report() -> None:
+        correct = sum(a["correct"] for a in report["apps"])
+        total = sum(a["total"] for a in report["apps"])
+        report["summary"] = {
+            "apps": len(report["apps"]),
+            "fields": total,
+            "correct": correct,
+            "accuracy": round(correct / total, 3) if total else 0,
+        }
+        DATA_DIR.mkdir(exist_ok=True)
+        AGENT_PATH.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
+
     for i, row in enumerate(rows, 1):
+        key = str(row["id"])
+        if key in done:
+            report["apps"].append(done[key])
+            print(f"[{i}/{len(rows)}] skip {row['app']} (cached audit)")
+            continue
         print(f"[{i}/{len(rows)}] audit {row['app']}")
         result = audit(researcher, row)
         entry = {"id": row["id"], "app": row["app"], "fields": {}, "correct": 0, "total": 0}
@@ -158,19 +191,13 @@ def main() -> None:
             entry["total"] += 1
             entry["correct"] += int(ok)
         entry["accuracy"] = round(entry["correct"] / entry["total"], 3) if entry["total"] else 0
-        correct += entry["correct"]
-        total += entry["total"]
         report["apps"].append(entry)
+        write_report()
         print(f"  {entry['correct']}/{entry['total']} fields supported")
 
-    report["summary"] = {
-        "apps": len(rows),
-        "fields": total,
-        "correct": correct,
-        "accuracy": round(correct / total, 3) if total else 0,
-    }
-    DATA_DIR.mkdir(exist_ok=True)
-    AGENT_PATH.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
+    write_report()
+    correct = report["summary"]["correct"]
+    total = report["summary"]["fields"]
 
     with CHECKLIST_PATH.open("w", encoding="utf-8", newline="") as fh:
         writer = csv.writer(fh)

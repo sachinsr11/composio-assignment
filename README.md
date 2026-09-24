@@ -1,9 +1,11 @@
-# 10-App Pilot — Agent Buildability Study
+# 100 Apps → Agent Buildability Study
 
-An agent researches **10 of 100 target apps** (one per category: auth, self-serve vs gated, API
-surface, MCP), derives a buildability verdict, clusters the patterns observed in the pilot, and
-ships one self-explanatory HTML page. The remaining 90 apps are left for scaling after
-verification.
+An agent researches 100 apps (auth, self-serve vs gated, API surface, MCP), derives a
+buildability verdict, clusters the patterns, runs an agent self-check on a sample, and ships one
+self-explanatory HTML page.
+
+- **Live page:** https://sachinsr11.github.io/composio-assignment/
+- **Source:** https://github.com/sachinsr11/composio-assignment
 
 Built with the current **Composio v3 session SDK** (`composio` + `composio_gemini`) for tool
 discovery/execution and **Gemini** (`google-genai`) for structured extraction.
@@ -20,8 +22,16 @@ Per app:
 4. **Derive the buildability verdict LAST** — a deterministic rule applied only after the other
    fields are known, so it is never guessed before the evidence.
 
-Then `verify.py` re-fetches fresh evidence and audits every field, and a human checklist scores
-the first pass against ground truth to show accuracy movement.
+Then `verify.py` re-fetches fresh evidence and audits every extracted field with a skeptical
+re-prompt (agent self-check). Human accuracy (first pass vs after loop) is scored only when a
+human fills `data/human_corrections.json`.
+
+## What is and is not assessed
+
+- **MCP:** the gather step did not target MCP, so it is reported as `not assessed` (91 apps) or
+  `official` (9 apps). It is never asserted as `none`.
+- **Evidence links** are filtered to documentation pages; favicons, images, and template URLs are
+  removed by `clean_urls()`.
 
 ## Setup
 
@@ -43,33 +53,32 @@ GEMINI_MODEL=gemini-3.5-flash-lite
 ## Run
 
 ```powershell
-python src/research_agent.py --pilot   # 10 apps, one per category (do this first)
-python src/verify.py                   # agent self-check + human checklist
+python src/research_agent.py --all     # all 100 apps (resumable; --force to redo)
+python src/verify.py --n 30            # agent self-check on a 30-app sample (resumable)
 python src/analyze.py                  # patterns -> data/insights.json
 python src/generate_report.py          # -> index.html
-# then, for the remaining 90:
-python src/research_agent.py --all
-python src/analyze.py; python src/generate_report.py
 ```
 
-Results are incremental and resumable in `data/raw_results.json`. Use `--force` to redo apps.
+Results are incremental and resumable in `data/raw_results.json`. `verify.py` is also resumable;
+re-run it to continue an interrupted self-check.
 
 ## Verification
 
-1. `verify.py` writes `data/human_checklist.csv` (one app per category).
+1. `verify.py` writes `data/agent_verification.json` (agent self-check on the sample) and
+   `data/human_checklist.csv`.
 2. Fill the `human_value` column from the cited docs, then save as
    `data/human_corrections.json` in the shape `{"<app id>": {"<field>": <correct value>}}`.
-3. Re-run `python src/verify.py` to compute first-pass vs after-loop accuracy in
-   `data/accuracy.json` (shown on the page).
+3. Re-run `python src/verify.py` to compute first-pass vs after-loop human accuracy in
+   `data/accuracy.json` (rendered on the page).
 
 ## Files
 
 | Path | Purpose |
 | --- | --- |
 | `apps.csv` | The 100-app input. |
-| `src/research_agent.py` | Composio gather + Gemini extraction; verdict derived last. |
-| `src/verify.py` | Agent self-check + human checklist + accuracy. |
-| `src/analyze.py` | Pattern clustering → `data/insights.json`. |
+| `src/research_agent.py` | Composio gather + Gemini extraction; verdict derived last; URL cleaning. |
+| `src/verify.py` | Resumable agent self-check + human checklist + accuracy. |
+| `src/analyze.py` | Pattern clustering (auth, access-by-category, blocker buckets, MCP) → `data/insights.json`. |
 | `src/generate_report.py` | Builds the single-file `index.html`. |
 | `index.html` | The deliverable. |
 

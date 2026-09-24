@@ -14,9 +14,9 @@ Take-home: research 100 apps (auth, self-serve vs gated, API surface, MCP), clus
 - **Composio-only engine.** No DuckDuckGo / `requests` fallback. If a Composio tool breaks, report it on the page; do not silently substitute another engine.
 - Model: `GEMINI_MODEL=gemini-3.5-flash-lite` (15 RPM / 250K TPM / 500 RPD).
 - Free-tier capacity is flaky: `gemini-3.5-flash-lite` intermittently 503s. On 503/404, `extract()` walks `GEMINI_FALLBACK_MODELS` (default `gemini-3.5-flash,gemini-3.6-flash,gemini-3.1-flash-lite`). This is model availability, not an engine fallback.
-- Verified working model IDs on this key: `gemini-3.5-flash-lite`, `gemini-3.5-flash`, `gemini-3.6-flash`. `gemini-2.5-*` and `gemini-2.5-flash*` 404 (not enabled); `gemini-3.1-flash-lite` currently 503s.
-- 500-RPD models (flash-lite) are required for the full 100; flash models cap at 20 RPD, so use them only as fallback.
-- `google_genai` logging is set to ERROR to silence the harmless one-time AFC warning.
+- Verified working model IDs on this key: `gemini-3.5-flash-lite`, `gemini-3.5-flash`, `gemini-3.6-flash`. `gemini-2.5-*` 404s; `gemini-3.1-flash-lite` currently 503s.
+- **MCP is NOT assessed** by the current gather step. Never assert `none`; record/report `not assessed` (`analyze.py` maps `none`/`unclear` → `not assessed`).
+- Evidence links go through `clean_urls()` (drops favicons/images/template URLs). Keep it.
 - Env: `COMPOSIO_API_KEY`, `GOOGLE_API_KEY` (Gemini key). Never commit `.env`.
 
 ## Research rule: facts first, verdict last
@@ -25,10 +25,10 @@ Take-home: research 100 apps (auth, self-serve vs gated, API surface, MCP), clus
 - State the main blocker for every gated app with its docs URL as evidence; "gated" is a valid finding, not a failure.
 
 ## Analysis rule: only strongly supported patterns
-Focus on: dominant auth method(s); self-serve vs gated **by category**; most common blockers; easy wins (self-serve + public API) vs apps needing outreach (partner / contact-sales / admin-approval). Add other patterns only if strongly supported by the data.
+Focus on: dominant auth method (**count apps per method; Bearer token > OAuth2** on this set); self-serve vs gated **by category**; most common blocker categories via `blocker_bucket()`; easy wins (self-serve + public API) vs apps needing outreach (partner / contact-sales / admin-approval). Report MCP as `not assessed`. Add other patterns only if strongly supported.
 
-## Workflow: pilot → verify → tune → scale
-Do **not** run all 100 first. Run a 10-app pilot (one per category), verify by hand, tune prompts, then run the remaining 90.
+## Workflow
+Do **not** rely on the 10-app `--pilot` for the deliverable; it is a smoke test only. The result is the full 100.
 
 ```powershell
 python -m venv .venv
@@ -36,21 +36,20 @@ python -m venv .venv
 pip install -r requirements.txt
 Copy-Item .env.example .env   # then fill in keys
 
-python src/research_agent.py --pilot   # 10 apps, one per category
-python src/verify.py                   # agent self-check + human checklist
-# fill data/human_corrections.json
-python src/verify.py                   # accuracy before/after loop
+python src/research_agent.py --all     # all 100 (resumable; --force to redo)
+python src/verify.py --n 30            # agent self-check sample (resumable; --all for every app)
 python src/analyze.py
 python src/generate_report.py
-
-python src/research_agent.py --all     # remaining 90 (resumable; --force to redo)
-python src/analyze.py; python src/generate_report.py
 ```
+
+`verify.py` saves after every app, so an interrupted run resumes on the next invocation. Human
+accuracy (first pass vs after loop) only appears once `data/human_corrections.json` exists — never
+claim it otherwise.
 
 ## Layout
 - `apps.csv` — the 100-app input.
-- `src/research_agent.py` — Composio gather + Gemini structured extraction; verdict derived last; incremental/resumable → `data/raw_results.json`.
-- `src/verify.py` — agent self-check vs cited evidence + 10-app human checklist → `data/human_corrections.json`; reports accuracy before/after.
-- `src/analyze.py` — clusters → `data/insights.json`.
-- `src/generate_report.py` — builds root `index.html` (single file, vanilla JS table).
+- `src/research_agent.py` — Composio gather + Gemini structured extraction; verdict derived last; URL cleanup; incremental/resumable → `data/raw_results.json`.
+- `src/verify.py` — resumable agent self-check vs fresh evidence + human checklist → `data/agent_verification.json`, `data/human_checklist.csv`; `data/accuracy.json` when corrections exist.
+- `src/analyze.py` — auth/access/buildability/blocker/MCP clusters → `data/insights.json`.
+- `src/generate_report.py` — builds root `index.html` (single file, vanilla JS table; guards against missing insights).
 - Deploy: GitHub Pages from `main` root (no build step).
