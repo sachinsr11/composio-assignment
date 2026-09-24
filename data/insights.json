@@ -1,0 +1,71 @@
+{
+  "total": 10,
+  "auth": {
+    "Token": 9,
+    "OAuth2": 8,
+    "Basic": 4,
+    "API key": 2
+  },
+  "access": {
+    "self-serve": 7,
+    "paid-plan": 3
+  },
+  "buildability": {
+    "yes": 7,
+    "partial": 3
+  },
+  "mcp": {
+    "none": 10
+  },
+  "top_blockers": {
+    "Requires a paid enterprise subscription or developer/sandbox organization setup to generate connected apps and API credentials.": 1,
+    "Zendesk requires a Zendesk account and subscription to access API features, with credentials managed via the Zendesk Admin Center or OAuth client setup.": 1,
+    "Requires enterprise Google Cloud setup and licensing rather than self-serve consumer API keys.": 1
+  },
+  "category_access": {
+    "AI Research and Media-native": {
+      "paid-plan": 1
+    },
+    "CRM and Sales": {
+      "paid-plan": 1
+    },
+    "Communications and Messaging": {
+      "self-serve": 1
+    },
+    "Data SEO and Scraping": {
+      "self-serve": 1
+    },
+    "Developer Infra and Data platforms": {
+      "self-serve": 1
+    },
+    "Ecommerce": {
+      "self-serve": 1
+    },
+    "Finance and Fintech": {
+      "self-serve": 1
+    },
+    "Marketing Ads Email and Social": {
+      "self-serve": 1
+    },
+    "Productivity and Project Management": {
+      "self-serve": 1
+    },
+    "Support and Helpdesk": {
+      "paid-plan": 1
+    }
+  },
+  "easy_wins": [
+    "Slack",
+    "Google Ads",
+    "Shopify",
+    "DataForSEO",
+    "GitHub",
+    "Notion",
+    "Stripe"
+  ],
+  "needs_outreach": [],
+  "no_public_api": [],
+  "self_serve_share": 0.7,
+  "buildable_share": 0.7,
+  "oauth_share": 0.8
+}
