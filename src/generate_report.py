@@ -26,22 +26,25 @@ TEMPLATE = r"""<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>10-App Pilot — Agent Buildability Study</title>
 <style>
-  :root { --bg:#0b0f17; --panel:#131a26; --line:#243044; --txt:#e6edf6; --mut:#93a4bd; --acc:#5b9dff;
+  :root { --bg:#0b0f17; --panel:#131a26; --panel-2:#182235; --line:#2a3951; --txt:#e6edf6; --mut:#9eacc1; --acc:#78b0ff;
           --yes:#1f8a4c; --partial:#a8760a; --no:#b3363f; }
   * { box-sizing:border-box; }
-  body { margin:0; background:var(--bg); color:var(--txt); font:15px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; }
+  body { margin:0; background:var(--bg); color:var(--txt); font:15px/1.6 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; }
   a { color:var(--acc); }
-  header { padding:40px 24px 24px; border-bottom:1px solid var(--line); background:linear-gradient(180deg,#101a2b,#0b0f17); }
-  .wrap { max-width:1200px; margin:0 auto; }
-  h1 { margin:0 0 6px; font-size:30px; letter-spacing:-.4px; }
-  h2 { margin:34px 0 10px; font-size:20px; }
-  .sub { color:var(--mut); margin:0; }
-  section { padding:8px 24px 20px; }
+  header { padding:56px 24px 30px; border-bottom:1px solid var(--line); background:radial-gradient(circle at 12% 0%,#1b3557 0,#101a2b 38%,#0b0f17 78%); }
+  .wrap { max-width:1240px; margin:0 auto; }
+  h1 { max-width:850px; margin:0 0 10px; font-size:clamp(30px,5vw,48px); line-height:1.08; letter-spacing:-1.2px; }
+  h2 { margin:38px 0 12px; font-size:22px; letter-spacing:-.25px; }
+  h3 { margin:0 0 5px; font-size:16px; }
+  .sub { max-width:900px; color:var(--mut); margin:0; font-size:16px; }
+  section { padding:12px 24px 24px; }
+  .eyebrow { margin:0 0 12px; color:var(--acc); font-size:12px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; }
+  .pilot-note { margin:22px 0 4px; padding:12px 15px; background:rgba(120,176,255,.1); border:1px solid rgba(120,176,255,.35); border-radius:10px; color:#d5e5fb; }
   .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin:18px 0; }
-  .card { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px; }
-  .card .n { font-size:26px; font-weight:700; }
+  .card { background:linear-gradient(145deg,var(--panel-2),var(--panel)); border:1px solid var(--line); border-radius:12px; padding:16px; }
+  .card .n { font-size:30px; line-height:1.1; font-weight:750; }
   .card .l { color:var(--mut); font-size:12px; text-transform:uppercase; letter-spacing:.5px; }
-  .cols { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  .cols { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
   @media (max-width:820px){ .cols{ grid-template-columns:1fr; } }
   ul { margin:6px 0 0; padding-left:18px; }
   li { margin:4px 0; }
@@ -49,8 +52,9 @@ TEMPLATE = r"""<!doctype html>
   input, select, button { background:var(--panel); color:var(--txt); border:1px solid var(--line); border-radius:8px; padding:8px 10px; font-size:14px; }
   button { cursor:pointer; }
   button.active { border-color:var(--acc); color:var(--acc); }
-  table { width:100%; border-collapse:collapse; font-size:13.5px; }
-  th, td { text-align:left; padding:9px 10px; border-bottom:1px solid var(--line); vertical-align:top; }
+  .table-wrap { overflow-x:auto; border:1px solid var(--line); border-radius:10px; }
+  table { width:100%; min-width:980px; border-collapse:collapse; font-size:13.5px; }
+  th, td { text-align:left; padding:11px 12px; border-bottom:1px solid var(--line); vertical-align:top; }
   th { position:sticky; top:0; background:#0f1622; cursor:pointer; z-index:1; white-space:nowrap; }
   tr:hover td { background:#101826; }
   .badge { display:inline-block; padding:2px 8px; border-radius:20px; font-size:11.5px; font-weight:600; white-space:nowrap; }
@@ -61,7 +65,7 @@ TEMPLATE = r"""<!doctype html>
   .muted{ color:var(--mut); }
   code { background:#0a0f18; border:1px solid var(--line); border-radius:6px; padding:1px 6px; font-size:12.5px; }
   pre { background:#0a0f18; border:1px solid var(--line); border-radius:10px; padding:14px; overflow:auto; font-size:12.5px; }
-  .note { background:#101826; border-left:3px solid var(--acc); padding:10px 14px; border-radius:0 8px 8px 0; color:#c9d6ea; }
+  .note { background:#101826; border-left:3px solid var(--acc); padding:12px 15px; border-radius:0 8px 8px 0; color:#c9d6ea; }
   footer { padding:24px; color:var(--mut); border-top:1px solid var(--line); margin-top:30px; }
   .pill{ font-size:12px; color:var(--mut); }
 </style>
@@ -69,8 +73,10 @@ TEMPLATE = r"""<!doctype html>
 <body>
 <header>
   <div class="wrap">
+    <p class="eyebrow">Research case study · pilot stage</p>
     <h1>10-App Pilot → Agent Toolkits: What's Buildable Today</h1>
     <p class="sub">An agent researched auth, access gates and API surface for <b>10 of 100 target apps</b> (one per category). Patterns below are drawn from this pilot only and are not presented as representative of the full 100. <span id="stamp" class="pill"></span></p>
+    <p class="pilot-note"><b>Read this as a pilot, not a final market estimate.</b> The next step is human verification, prompt tuning, and then research on the remaining 90 apps.</p>
   </div>
 </header>
 
@@ -98,6 +104,7 @@ TEMPLATE = r"""<!doctype html>
     <button data-f="no">Gated / blocked</button>
     <span class="muted" id="count"></span>
   </div>
+  <div class="table-wrap">
   <table>
     <thead><tr>
       <th data-k="app">App</th><th data-k="category">Category</th><th data-k="auth">Auth</th>
@@ -106,6 +113,7 @@ TEMPLATE = r"""<!doctype html>
     </tr></thead>
     <tbody id="rows"></tbody>
   </table>
+  </div>
 </section>
 
 <section class="wrap cols">
